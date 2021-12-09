@@ -1,8 +1,7 @@
 import React from "react";
 import {
-    Container, Heading, HStack, IconButton, Stack, Text, useBreakpointValue
+    Container, Heading, HStack, IconButton, Stack, Text
 } from "@chakra-ui/react";
-import Head from "next/head";
 import Header from "@/components/Common/Header";
 import {FaGithub, FaTwitch, FaTwitter} from "react-icons/fa";
 import FadeIn from "@/components/Common/FadeIn";

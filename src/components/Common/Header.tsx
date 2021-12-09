@@ -1,7 +1,7 @@
-import {Box, Flex, Heading, HStack, IconButton, Link, Spacer, Switch, useColorMode} from "@chakra-ui/react";
+import {HStack, IconButton, Link, Spacer, useColorMode} from "@chakra-ui/react";
 import React from "react";
-import {FaGithub, FaMoon, FaSun, FaTwitch, FaTwitter} from "react-icons/fa";
-import {ExternalLinkIcon} from "@chakra-ui/icons";
+import {FaMoon, FaSun} from "react-icons/fa";
+import Head from "next/head";
 
 const Header: React.VFC = () => {
     const { colorMode, toggleColorMode } = useColorMode();
