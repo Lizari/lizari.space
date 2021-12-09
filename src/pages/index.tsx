@@ -9,11 +9,8 @@ import FadeIn from "@/components/Common/FadeIn";
 export default function Home() {
     return(
         <div>
-            <Head>
-                <title>Lizari.space</title>
-            </Head>
             <Container maxW={"5xl"}>
-                <Header/>
+                <Header title={"Home"}/>
                 <FadeIn>
                     <Stack
                         textAlign={"center"}
