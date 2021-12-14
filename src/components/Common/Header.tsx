@@ -17,7 +17,7 @@ const Header: React.VFC<HeaderProps> = (props) => {
             </Head>
             <HStack spacing={5}
                     mt={"20px"}
-                    fontWeight={"semibold"}>
+                    fontWeight={"hairline"}>
                 <Link href={"/"} fontSize={{base: "xl", sm: "2xl", md: "4xl"}}>Home</Link>
                 <Link href={"/about"} fontSize={{base: "xl", sm: "2xl", md: "4xl"}}>About Me</Link>
                 <Link href={"/blog"} fontSize={{base: "xl", sm: "2xl", md: "4xl"}}>Blog</Link>
