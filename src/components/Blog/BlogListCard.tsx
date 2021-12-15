@@ -13,36 +13,40 @@ type BlogCard = {
 const BlogListCard: React.VFC<BlogCard> = (props) => {
     return(
         <div>
-            <Box maxW={"300px"}
+            <Box maxW={{base: "300px", md: "350px", lg: "400px"}}
                  boxShadow={"lg"}
                  borderWidth={"1px"}
                  borderRadius={"lg"}
                  overflow={"hidden"}
                  bgColor={"white"}>
-                <Image src={props.thumbnail} alt={"thumbnail"}/>
-                <Box p={"10px"}>
-                    <Flex alignItems={"baseline"}>
-                        {props.tags.map((value => (
-                            <Tag color={"teal.400"}
-                                 bgColor={"green.50"}
-                                 display={"full"}
-                                 mr={"3px"}>
-                                <TagLabel>{value}</TagLabel>
-                            </Tag>
-                        )))}
-                    </Flex>
-                    <Box align={"left"}>
-                        <Link color={"gray.900"}
-                              fontSize={{base: "sm", sm: "xl", xl: "2xl"}}
-                              fontWeight={"semibold"}
-                              href={"/blog/" + props.slug}>{props.title}</Link>
-                        <Text color={'gray.500'}
-                              fontSize={{base: "sm", sm: "md"}}
-                              mb={"10px"}>{props.description}</Text>
-                        <Text color={'gray.400'}
-                              fontSize={{base: "sm", sm: "md"}}>{props.date}</Text>
+                <Link href={"/blog/" + props.slug}>
+                    <Image src={props.thumbnail}
+                           maxH={"300px"}
+                           alt={"thumbnail"}/>
+                    <Box p={"10px"}>
+                        <Flex>
+                            {props.tags.map((value => (
+                                <Tag color={"teal.400"}
+                                     bgColor={"green.100"}
+                                     mr={"3px"}>
+                                    <TagLabel>{value}</TagLabel>
+                                </Tag>
+                            )))}
+                        </Flex>
+                        <Box>
+                            <Link color={"gray.900"}
+                                  fontSize={{base: "sm", sm: "xl", xl: "2xl"}}
+                                  fontWeight={"semibold"}
+                                  href={"/blog/" + props.slug}>{props.title}</Link>
+                            <Text color={'gray.500'}
+                                  fontSize={{base: "sm", sm: "md"}}
+                                  mb={"10px"}>{props.description}</Text>
+                            <Text color={'gray.400'}
+                                  align={"left"}
+                                  fontSize={{base: "sm", sm: "md"}}>{props.date}</Text>
+                        </Box>
                     </Box>
-                </Box>
+                </Link>
             </Box>
         </div>
     );

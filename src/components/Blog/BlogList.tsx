@@ -13,7 +13,7 @@ const BlogList: React.VFC<Props> = (props) => {
     return(
         <div>
             <Box align={"center"}>
-                <SimpleGrid minChildWidth={"410px"} spacingY={"20px"}>
+                <SimpleGrid minChildWidth={"300px"} spacingY={"20px"}>
                     {props.posts.map((post, index) => (
                         <BlogListCard
                             slug={post.slug}
