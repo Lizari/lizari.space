@@ -1,5 +1,3 @@
-import fs from "fs";
-import path from "path";
 import matter from "gray-matter";
 import {GetStaticProps, InferGetStaticPropsType} from "next";
 import Header from "@/components/Common/Header";
@@ -61,11 +59,12 @@ export default function Page(props: PageProps) {
 }
 
 
-export function getStaticPaths() {
-    const files = fs.readdirSync(path.join("posts"))
-    const paths = files.map(filename => ({
+export async function getStaticPaths() {
+    const END_POINT = process.env.API_URL! + "/blogs";
+    const list = await fetch(END_POINT).then((x) => x.json());
+    const paths = list.posts.map((post: { slug: string; }) => ({
         params: {
-            slug: filename.replace(".md", ""),
+            slug: post.slug,
         },
     }))
 
@@ -75,9 +74,18 @@ export function getStaticPaths() {
     }
 }
 
-type Props = {
-    data: {[key: string]: any},
+type Post = {
     slug: string,
+    title: string,
+    date: string,
+    description: string,
+    thumbnail?: string,
+    tags: Array<string>,
+    content: string,
+}
+
+type Props = {
+    data: Post,
     content: string
 }
 
@@ -86,17 +94,22 @@ interface Params extends ParsedUrlQuery {
 }
 
 export const getStaticProps: GetStaticProps<Props, Params> = async ({ params,}) => {
-    const slug = params!.slug.toString()
-    const markdownWithMeta = fs.readFileSync(path.join("posts", slug + ".md"), "utf-8")
-    let {data, content} = matter(markdownWithMeta)
-    content = await markdownToHtml(content);
+    const slug = params!.slug.toString();
+    const mdInfo: Post = await fetch(process.env.API_URL! + `/blog/${slug}`)
+    .then((res) => {
+        return res.json();
+    })
+
+    const buffer = new Buffer(mdInfo.content, "base64");
+    const mdObj = buffer.toString("utf8");
+    let { content } = matter(mdObj);
+
+    content = markdownToHtml(content);
 
     return {
         props: {
-            data,
-            slug,
-            content
-        },
-        revalidate: 1
+            data: mdInfo,
+            content: content
+        }
     }
 }

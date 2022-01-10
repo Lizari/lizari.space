@@ -4,8 +4,7 @@ import BlogListCard from "@/components/Blog/BlogListCard";
 
 type Props = {
     posts: Array<{
-        slug: string,
-        data: {[key: string]: any}
+        [key: string]: any
     }>
 }
 
@@ -17,11 +16,11 @@ const BlogList: React.VFC<Props> = (props) => {
                     {props.posts.map((post, index) => (
                         <BlogListCard
                             slug={post.slug}
-                            title={post.data.title}
-                            date={post.data.date}
-                            description={post.data.description}
-                            thumbnail={post.data.thumbnailUrl}
-                            tags={post.data.tags}/>
+                            title={post.title}
+                            date={post.date}
+                            description={post.description}
+                            thumbnail={post.thumbnail}
+                            tags={post.tags}/>
                     ))}
                 </SimpleGrid>
             </Box>

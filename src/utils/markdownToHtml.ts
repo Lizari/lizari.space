@@ -8,8 +8,8 @@ import rehypeSlug from "rehype-slug";
 import rehypeToc from "@jsdevtools/rehype-toc";
 import rehypeFormat from "rehype-format";
 
-const markdownToHtml = async (markdown: string) => {
-    const result = await unified()
+const markdownToHtml = (markdown: string) => {
+    const result = unified()
         .use(remarkParse)
         .use(remarkFrontmatter)
         .use(remarkRehype, {allowDangerousHtml: true})
@@ -33,7 +33,7 @@ const markdownToHtml = async (markdown: string) => {
                         {
                             type: "element",
                             tagName: "summary",
-                            children: [{ type: "text", value: "目次" }],
+                            children: [{type: "text", value: "目次"}],
                         },
                         toc,
                     ],

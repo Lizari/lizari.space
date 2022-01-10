@@ -1,8 +1,5 @@
 import Header from "@/components/Common/Header";
 import BlogList from "@/components/Blog/BlogList";
-import fs from "fs";
-import path from "path";
-import matter from "gray-matter";
 import {InferGetStaticPropsType} from "next";
 import {Box, Container} from "@chakra-ui/react";
 import React from "react";
@@ -25,19 +22,44 @@ export default function Blog(props: Props) {
     )
 }
 
+type Post = {
+    slug: string,
+    title: string,
+    date: string,
+    description: string,
+    thumbnail?: string,
+    tags: Array<string>,
+    content: string,
+}
+
+type PostInfo = {
+    slug: string,
+    posted_by: string,
+    updated_by: string,
+}
+
+type Posts = {
+    posts: PostInfo[],
+}
+
+
 export const getStaticProps = async () => {
-    /* Todo:
-        file serverからfetchするようにする
-    */
-    const files = fs.readdirSync(path.join('posts'))
-    const posts = files.map(filename => {
-    const markdownWithMeta = fs.readFileSync(path.join('posts', filename), 'utf-8')
-    const { data } = matter(markdownWithMeta)
-        return {
-            data,
-            slug: filename.split('.')[0]
-        }
-    })
+    const END_POINT = process.env.API_URL! + "/blogs";
+    const apiRequest = (): Promise<Posts> => fetch(END_POINT).then((x) => x.json());
+    const list = await apiRequest();
+    const posts: Post[] = [];
+
+    if (list.posts) {
+        await Promise.all(list.posts.map(async (post: any) => {
+            const data: Post = await fetch(process.env.API_URL! + `/blog/${post.slug}`)
+                .then((res) => {
+                    return res.json()
+                })
+                .catch((err) => console.log(err))
+            posts.push(data);
+        }));
+    }
+
     return {
         props: {
             posts
