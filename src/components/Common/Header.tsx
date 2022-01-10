@@ -18,8 +18,8 @@ const Header: React.VFC<HeaderProps> = (props) => {
             <HStack spacing={5}
                     mt={"20px"}
                     fontWeight={"hairline"}>
-                <Link href={"/"} fontSize={{base: "xl", sm: "2xl", md: "5xl"}}>Home</Link>
-                <Link href={"/blog"} fontSize={{base: "xl", sm: "2xl", md: "5xl"}}>Blog</Link>
+                <Link href={"/"} fontSize={{base: "3xl", sm: "4xl", md: "5xl"}}>Home</Link>
+                <Link href={"/blog"} fontSize={{base: "3xl", sm: "4xl", md: "5xl"}}>Blog</Link>
                 <Spacer/>
                 <IconButton
                     icon={colorMode == "dark" ?  <FaMoon size={"42px"}/>: <FaSun size={"42px"}/>}

@@ -12,7 +12,7 @@ const TopBanner = () => {
                    src={"https://avatars.githubusercontent.com/u/39207967?v=4"}/>
             <Center>
                 <Heading lineHeight={'110%'}
-                         fontSize={{base: "3xl", sm: "6xl", xl: "9xl"}}>
+                         fontSize={{base: "4xl", sm: "6xl", md: "8xl"}}>
                     Lizari
                 </Heading>
             </Center>
