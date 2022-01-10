@@ -18,12 +18,13 @@ const upload = multer({storage: storage});
 
 const DIRECTORY = "./posts";
 const DB = "./blog.db";
+const PATH = "/api/v1";
 
-app.get("/api/blog", (req, res) => {
+app.get(`${PATH}/blog`, (req, res) => {
     res.sendFile(path.join(__dirname, "index.html"));
 });
 
-app.get("/api/blogs/", async (req, res) => {
+app.get(`${PATH}/blogs/`, async (req, res) => {
     const posts = await select("*");
 
     res.status(200).send({
@@ -31,7 +32,7 @@ app.get("/api/blogs/", async (req, res) => {
     });
 });
 
-app.get("/api/blog/:slug", async (req, res) => {
+app.get(`${PATH}/blog/:slug`, async (req, res) => {
     const slug = req.params.slug;
     const blog = await select("slug", `WHERE slug = '${slug} LIMIT 1'`);
 
@@ -59,7 +60,7 @@ app.get("/api/blog/:slug", async (req, res) => {
     }
 });
 
-app.post("/api/blog", upload.single("file"), async (req, res, next) => {
+app.post(`${PATH}/blog`, upload.single("file"), async (req, res, next) => {
     insert(req.file.originalname);
     res.status(200).send({
         message: req.file.originalname + " posted",
