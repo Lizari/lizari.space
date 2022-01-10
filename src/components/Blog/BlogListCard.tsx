@@ -7,7 +7,7 @@ type BlogCard = {
     date: string,
     description: string,
     thumbnail: string,
-    tags: [string],
+    tags: Array<string>,
 }
 
 const BlogListCard: React.VFC<BlogCard> = (props) => {

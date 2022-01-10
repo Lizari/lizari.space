@@ -34,7 +34,7 @@ app.get(`${PATH}/blogs/`, async (req, res) => {
 
 app.get(`${PATH}/blog/:slug`, async (req, res) => {
     const slug = req.params.slug;
-    const blog = await select("slug", `WHERE slug = '${slug} LIMIT 1'`);
+    const blog = await select("slug", `WHERE slug = '${slug}' LIMIT 1`);
 
     if (blog[0]) {
         new Promise((resolve, reject) => {

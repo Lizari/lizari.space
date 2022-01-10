@@ -100,7 +100,7 @@ export const getStaticProps: GetStaticProps<Props, Params> = async ({ params,}) 
         return res.json();
     })
 
-    const buffer = new Buffer(mdInfo.content, "base64");
+    const buffer = Buffer.from(mdInfo.content, "base64");
     const mdObj = buffer.toString("utf8");
     let { content } = matter(mdObj);
 

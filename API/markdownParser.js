@@ -1,6 +1,3 @@
-const fs = require("fs");
-const { unescape } = require("querystring");
-
 /*
     @param { String } content - markdownの中身
 */
@@ -34,8 +31,5 @@ function tagsToArray(tags) {
 }
 
 function base64Encode(text) {
-    const str = String.fromCharCode.apply(null, new TextEncoder().encode(text));
-    const encoded = btoa(str);
-
-    return encoded;
+    return Buffer.from(text).toString("base64");
 }
