@@ -47,10 +47,9 @@ export default function Page(props: PageProps) {
                         </HStack>
                         <Box
                             maxW={"3xl"}
+                            fontSize={{base: "15px", sm: "18px", md: "22px"}}
                             pt={"10vh"}>
-                            <Text fontSize={{base: "16px", sm: "18px", md: "22px"}}>
-                                <div dangerouslySetInnerHTML={{__html: props.content}}/>
-                            </Text>
+                            <div dangerouslySetInnerHTML={{__html: props.content}}/>
                         </Box>
                     </VStack>
             </Container>
