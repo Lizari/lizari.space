@@ -20,10 +20,6 @@ const DIRECTORY = "./posts";
 const DB = "./blog.db";
 const PATH = "/api/v1";
 
-app.get(`${PATH}/blog`, (req, res) => {
-    res.sendFile(path.join(__dirname, "index.html"));
-});
-
 app.get(`${PATH}/blogs/`, async (req, res) => {
     const posts = await select("*");
 
@@ -105,5 +101,4 @@ const initialize = () => {
 
 initialize();
 
-app.use("/", express.static("."));
 app.listen(port, () => console.log(`Listening on port ${port}`));
