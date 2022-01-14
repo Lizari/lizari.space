@@ -30,7 +30,7 @@ app.get(`${PATH}/blogs/`, async (req, res) => {
 
 app.get(`${PATH}/blog/:slug`, async (req, res) => {
     const slug = req.params.slug;
-    const blog = await select("slug", `WHERE slug = '${slug}' LIMIT 1`);
+    const blog = await select("*", `WHERE slug = '${slug}' LIMIT 1`);
 
     if (blog[0]) {
         new Promise((resolve, reject) => {
@@ -40,9 +40,21 @@ app.get(`${PATH}/blog/:slug`, async (req, res) => {
                 resolve(data);
             });
         }).then((result) => {
-            let parsed = parser.parse(slug, result);
+            const parsed = parser.parse(result);
+            const meta = blog[0];
 
-            res.status(200).send(parsed);
+            res.status(200).send({
+                meta: {
+                    slug: meta.slug,
+                    posted_by: meta.posted_by,
+                    updated_by: meta.updated_by,
+                },
+                title: parsed.title,
+                description: parsed.description,
+                thumbnail: parsed.thumbnail,
+                tags: parsed.tags,
+                content: parsed.content,
+            });
         }).catch((err) => {
             console.log(err);
             res.status(400).send({

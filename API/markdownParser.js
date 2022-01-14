@@ -1,7 +1,7 @@
 /*
     @param { String } content - markdownの中身
 */
-exports.parse = function (slug, content) {
+exports.parse = function (content) {
     const bracket = "---";
     const body = content.split(/\r?\n/);
     const headerMd = body.splice(1, body.lastIndexOf(bracket) - 1);
@@ -14,11 +14,8 @@ exports.parse = function (slug, content) {
         header[obj[0]] = obj[1];
     }
 
-
     return {
-        slug: slug,
         title: header.title,
-        date: header.date,
         description: header.description,
         thumbnail: header.thumbnail,
         tags: tagsToArray(header.tags),
