@@ -1,27 +1,21 @@
 import React from "react";
 import {Box, SimpleGrid} from "@chakra-ui/react";
+import {Post} from "@/entity/Post";
+import datetimeManger from "@/utils/datetimeManger";
 import BlogListCard from "@/components/Blog/BlogListCard";
 
-type Props = {
-    posts: Array<{
-        [key: string]: any
-    }>
-}
-
-const BlogList: React.VFC<Props> = (props) => {
+const BlogList: React.VFC<{
+    posts: Array<Post>,
+}> = (props) => {
     return(
         <div>
             <Box align={"center"}>
                 <SimpleGrid minChildWidth={"300px"} spacingY={"20px"}>
-                    {props.posts.map((post, index) => (
-                        <BlogListCard
-                            slug={post.slug}
-                            title={post.title}
-                            date={post.date}
-                            description={post.description}
-                            thumbnail={post.thumbnail}
-                            tags={post.tags}/>
-                    ))}
+                    {props.posts.sort((a, b) => {
+                        return datetimeManger.compare(datetimeManger.parse(a.meta.posted_by), datetimeManger.parse(b.meta.posted_by))
+                    }).map((post) => {
+                       return <BlogListCard {...post}/>
+                    })}
                 </SimpleGrid>
             </Box>
         </div>
