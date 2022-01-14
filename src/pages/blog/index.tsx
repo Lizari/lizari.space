@@ -3,8 +3,10 @@ import BlogList from "@/components/Blog/BlogList";
 import {InferGetStaticPropsType} from "next";
 import {Box, Container} from "@chakra-ui/react";
 import React from "react";
+import {Post} from "@/entity/Post";
+import {PostInfo} from "@/entity/PostInfo";
 
-type Props = InferGetStaticPropsType<typeof getStaticProps>;
+type Props = InferGetStaticPropsType<typeof getServerSideProps>;
 
 export default function Blog(props: Props) {
     return(
@@ -22,38 +24,20 @@ export default function Blog(props: Props) {
     )
 }
 
-type Post = {
-    slug: string,
-    title: string,
-    date: string,
-    description: string,
-    thumbnail?: string,
-    tags: Array<string>,
-    content: string,
-}
 
-type PostInfo = {
-    slug: string,
-    posted_by: string,
-    updated_by: string,
-}
-
-type Posts = {
-    posts: PostInfo[],
-}
-
-
-export const getStaticProps = async () => {
+export const getServerSideProps = async () => {
     const END_POINT = process.env.API_URL! + "/blogs";
-    const apiRequest = (): Promise<Posts> => fetch(END_POINT).then((x) => x.json());
+    const apiRequest = (): Promise<{
+        posts: PostInfo[]
+        }> => fetch(END_POINT).then((x) => x.json());
     const list = await apiRequest();
     const posts: Post[] = [];
 
     if (list.posts) {
-        await Promise.all(list.posts.map(async (post: any) => {
-            const data: Post = await fetch(process.env.API_URL! + `/blog/${post.slug}`)
+        await Promise.all(list.posts.map(async (info: PostInfo) => {
+            const data: Post = await fetch(process.env.API_URL! + `/blog/${info.slug}`)
                 .then((res) => {
-                    return res.json()
+                    return res.json();
                 })
                 .catch((err) => console.log(err))
             posts.push(data);

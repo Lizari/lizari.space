@@ -1,5 +1,5 @@
 import matter from "gray-matter";
-import {GetStaticProps, InferGetStaticPropsType} from "next";
+import {GetServerSideProps} from "next";
 import Header from "@/components/Common/Header";
 import {
     Box,
@@ -10,36 +10,41 @@ import {
     VStack
 } from "@chakra-ui/react";
 import React from "react";
-import {ParsedUrlQuery} from "querystring";
 import markdownToHtml from "@/utils/markdownToHtml";
 import "highlight.js/styles/atom-one-dark-reasonable.css"
+import {Post} from "@/entity/Post";
 
-type PageProps = InferGetStaticPropsType<typeof getStaticProps>;
-
-export default function Page(props: PageProps) {
+export default function Page(props: {
+    post: Post,
+    content: string
+}) {
     return (
         <div>
             <Container maxW={"5xl"}>
-                <Header title={props.data.title}/>
+                <Header title={props.post.title}/>
                     <VStack
-                        my={{base: "40px", md: "80px"}}>
+                        max={"3xl"}
+                        mt={{base: "40px", md: "80px"}}>
                         <Box pt={"20px"}>
                             <Text fontWeight={"bold"}
-                                  fontSize={{base: "20px", sm: "40px", md: "60px"}}>
-                                {props.data.title}
+                                  fontSize={{base: "20px", sm: "40px", md: "50px"}}>
+                                {props.post.title}
                             </Text>
                         </Box>
-                        <HStack fontSize={{base: "20px", md: "30px", xl: "40px"}}>
+                        <HStack fontSize={{base: "20px", md: "30px"}}>
                             <Flex>
-                                <Text>{props.data.date}</Text>
+                                <Text>Posted: {props.post.meta.posted_by}</Text>
                             </Flex>
                             <Spacer/>
                             <Flex>
-                                {props.data.tags.map(((value: string) => (
-                                    <Tag mr={"5px"}
+                                {props.post.tags.map(((value: string) => (
+                                    <Tag color={"teal.400"}
+                                         bgColor={"green.100"}
+                                         mr={"5px"}
                                          bg={"none"}
-                                         // @ts-ignore - なぜかサイズ指定の際エラーがでる
-                                         size={{base: "20px", md: "30px", xl: "40px"}}>
+                                         borderRadius={"5px"}
+                                         //@ts-ignore
+                                         size={{base: "20px", md: "30px"}}>
                                         <TagLabel>{value}</TagLabel>
                                     </Tag>
                                 )))}
@@ -57,49 +62,11 @@ export default function Page(props: PageProps) {
     )
 }
 
+export const getServerSideProps: GetServerSideProps = async (context) => {
+    const slug = context.params?.slug as string;
+    const post: Post = await fetch(process.env.API_URL! + `/blog/${slug}`).then((res) => res.json());
 
-export async function getStaticPaths() {
-    const END_POINT = process.env.API_URL! + "/blogs";
-    const list = await fetch(END_POINT).then((x) => x.json());
-    const paths = list.posts.map((post: { slug: string; }) => ({
-        params: {
-            slug: post.slug,
-        },
-    }))
-
-    return {
-        paths,
-        fallback: false
-    }
-}
-
-type Post = {
-    slug: string,
-    title: string,
-    date: string,
-    description: string,
-    thumbnail?: string,
-    tags: Array<string>,
-    content: string,
-}
-
-type Props = {
-    data: Post,
-    content: string
-}
-
-interface Params extends ParsedUrlQuery {
-    slug: string,
-}
-
-export const getStaticProps: GetStaticProps<Props, Params> = async ({ params,}) => {
-    const slug = params!.slug.toString();
-    const mdInfo: Post = await fetch(process.env.API_URL! + `/blog/${slug}`)
-    .then((res) => {
-        return res.json();
-    })
-
-    const buffer = Buffer.from(mdInfo.content, "base64");
+    const buffer = Buffer.from(post.content, "base64");
     const mdObj = buffer.toString("utf8");
     let { content } = matter(mdObj);
 
@@ -107,7 +74,7 @@ export const getStaticProps: GetStaticProps<Props, Params> = async ({ params,}) 
 
     return {
         props: {
-            data: mdInfo,
+            post: post,
             content: content
         }
     }
