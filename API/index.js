@@ -68,10 +68,25 @@ app.get(`${PATH}/blog/:slug`, async (req, res) => {
     }
 });
 
-app.post(`${PATH}/blog`, upload.single("file"), async (req, res, next) => {
+app.post(`${PATH}/blog/upload/`, upload.single("file"), async (req, res, next) => {
     insert(req.file.originalname);
     res.status(200).send({
         message: req.file.originalname + " posted",
+    });
+});
+
+app.post(`${PATH}/blog/delete/:slug`, async (req, res) => {
+    const slug = req.params.slug;
+
+    deletePost(slug).then((result) => {
+        console.log(result)
+        res.status(200).send({
+            message: "That post has been deleted",
+        });
+    },(err) => {
+        res.status(503).send({
+            message: "That post could not deleted",
+        });
     });
 });
 
@@ -97,6 +112,24 @@ const insert = (slug) => {
     db.run(query, [slug], (err) => {
         if (err) console.log(err);
     });
+};
+
+const deletePost = (slug) => {
+    return new Promise((resolve, reject) => {
+            const db = new sqlite3.Database(DB);
+            const query = `DELETE FROM blogs WHERE slug = ?`;
+
+            db.run(query, [slug], (err) => {
+                if (err) {
+                    reject(err);
+                    console.log(err);
+                }
+                fs.unlink(`${DIRECTORY}/${slug}`, (err) => {
+                    if (err) reject(err);
+                });
+                resolve(true);
+            });
+        });
 };
 
 const initialize = () => {
