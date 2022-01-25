@@ -1,8 +1,13 @@
 import {Box, Text, Image, Flex, Tag, Link, TagLabel} from "@chakra-ui/react";
 import React from "react";
 import {Post} from "@/entity/Post";
+import {useRouter} from "next/router";
+import DatetimeUtil from "@/utils/DatetimeUtil";
 
 const BlogListCard: React.VFC<Post> = (props) => {
+    const router = useRouter();
+    const handleLinkClick = (url: string) => router.push(url);
+
     return (
         <div>
             <Box maxW={{base: "300px", md: "350px", lg: "400px"}}
@@ -28,13 +33,10 @@ const BlogListCard: React.VFC<Post> = (props) => {
                         <Link color={"gray.900"}
                               fontSize={{base: "sm", sm: "xl", xl: "2xl"}}
                               fontWeight={"semibold"}
-                              href={"/blog/" + props.meta.slug}>{props.title}</Link>
-                        <Text color={'gray.500'}
-                              fontSize={{base: "sm", sm: "md"}}
-                              mb={"10px"}>{props.description}</Text>
+                              onClick={() => handleLinkClick("/blog/" + props.meta.slug)}>{props.title}</Link>
                         <Text color={'gray.400'}
                               align={"left"}
-                              fontSize={{base: "sm", sm: "md"}}>Last updated: {props.meta.posted_by}</Text>
+                              fontSize={{base: "sm", sm: "md"}}>Last update: {DatetimeUtil.translate(DatetimeUtil.parse(props.meta.posted_by))}</Text>
                     </Box>
                 </Box>
             </Box>

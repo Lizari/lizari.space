@@ -16,6 +16,7 @@ exports.parse = function (content) {
 
     return {
         title: header.title,
+        date: header.date,
         description: header.description,
         thumbnail: header.thumbnail,
         tags: tagsToArray(header.tags),
@@ -24,7 +25,7 @@ exports.parse = function (content) {
 };
 
 function tagsToArray(tags) {
-    return tags.match(/\[(.*?)\]/)[1].split(",");
+    return tags.match(/\[(.*?)]/)[1].split(",");
 }
 
 function base64Encode(text) {

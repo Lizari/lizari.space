@@ -10,7 +10,6 @@
   "author": "Lizari",
   "license": "MIT",
   "dependencies": {
-    "cors": "^2.8.5",
     "dotenv": "^14.2.0",
     "express": "^4.17.2",
     "multer": "^1.4.4",
