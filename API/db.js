@@ -51,8 +51,8 @@ const insert = (slug, post_data) => {
             console.log(err);
             return;
         }
-        query = 'INSERT INTO post_data (slug, title, written_by, description, thumbnail, tags, content) VALUES (?, ?, ?, ?, ?, ?, ?)';
-        db.run(query, [slug, post_data.title, post_data.date, post_data.description, post_data.thumbnail, post_data.tags, post_data.content], (err) => {
+        query = 'INSERT INTO post_data (slug, title, written_by, description, thumbnail, tags, content) VALUES (?, ?, ?, ?, ?, ?, ?) ON CONFLICT(slug) DO UPDATE SET title = ?, description = ?, thumbnail = ?, tags = ?, content = ?;';
+        db.run(query, [slug, post_data.title, post_data.date, post_data.description, post_data.thumbnail, post_data.tags, post_data.content, post_data.title, post_data.description, post_data.thumbnail, post_data.tags, post_data.content], (err) => {
             if (err) {
                 console.log(err);
             }
@@ -68,8 +68,7 @@ const insert = (slug, post_data) => {
 const deletePost = (slug) => {
     return new Promise((resolve, reject) => {
         const db = new sqlite3.Database(DB);
-        const query = `DELETE FROM posts WHERE slug = ?;
-                       DELETE FROM posts_data WHERE slug = ?`;
+        let query = `DELETE FROM posts WHERE slug = ?;`;
 
         db.run(query, [slug], (err) => {
             if (err) {
@@ -79,6 +78,14 @@ const deletePost = (slug) => {
             fs.unlink(`${DIRECTORY}/${slug}`, (err) => {
                 if (err) reject(err);
             });
+
+            query = `DELETE FROM posts_data WHERE slug = ?;`;
+            db.run(query, [slug], (err) => {
+                if (err) {
+                    reject(err);
+                    console.log(err);
+                }
+            })
             resolve(true);
         });
     });
