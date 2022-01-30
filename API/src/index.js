@@ -3,9 +3,8 @@ const parser = require("./markdownParser");
 const db = require("./db");
 const fs = require("fs");
 const multer = require("multer");
-const env = process.env;
 const app = express();
-const port = env.PORT || 3001;
+const port = process.env.PORT || 3001;
 const storage = multer.diskStorage({
     destination: (req, file, cb) => {
         cb(null, "posts/");
@@ -14,16 +13,14 @@ const storage = multer.diskStorage({
         cb(null, file.originalname);
     }
 });
-require("dotenv").config();
 
 const upload = multer({storage: storage});
 
 const DIRECTORY = "./posts";
 const PATH = "/api/v1";
-const ORIGIN_WHITELIST = env.SERVER_URL;
 
 app.use((req, res, next) => {
-    res.header("Access-Control-Allow-Origin", ORIGIN_WHITELIST);
+    res.header("Access-Control-Allow-Origin", "*");
     res.header("Access-Control-Credentials", "true");
     res.header("Access-Control-Allow-Headers", "X-Requested-With, X-HTTP-Method-Override, Content-Type, Accept");
     res.header('Access-Control-Allow-Methods', 'POST, GET');
@@ -32,11 +29,11 @@ app.use((req, res, next) => {
 
 app.get(`${PATH}/blogs`, async (req, res) => {
     /*
-        withDataのクリエがあった場合纏めて返す
+        includeのクリエがあった場合纏めて返す
 
         無い場合はpostデータは返さない
      */
-    if (req.query.withData && req.query.withData === "true") {
+    if (req.query.include && req.query.include === "true") {
         const posts = await db.select("*", "posts, post_data");
 
         new Promise((resolve) => {
@@ -143,4 +140,4 @@ app.post(`${PATH}/blog/delete/:slug`, async (req, res) => {
     });
 });
 
-app.listen(port, () => console.log(`Listening on port ${port}`));
+app.listen(port,() => console.log(`Listening on port ${port}`));

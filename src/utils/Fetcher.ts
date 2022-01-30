@@ -8,7 +8,7 @@ const fetcher = async (url: string): Promise<any> => await fetch(Config.API_URL 
 }).then((res) => res.json());
 
 const usePosts = (include: boolean) => {
-    const { data, error } = include ? useSWR<Array<Post>, Error>(`/blogs?withData=true`, fetcher) : useSWR<Array<Post>, Error>(`/blogs`, fetcher);
+    const { data, error } = include ? useSWR<Array<Post>, Error>(`/blogs?include=true`, fetcher) : useSWR<Array<Post>, Error>(`/blogs`, fetcher);
 
     return {
         posts: data,
