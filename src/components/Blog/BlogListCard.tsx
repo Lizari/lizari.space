@@ -17,10 +17,12 @@ const BlogListCard: React.VFC<Post> = (props) => {
                  overflow={"hidden"}
                  bgColor={"white"}>
                 <Image src={props.thumbnail}
-                       maxH={"300px"}
+                       objectFit={"cover"}
+                       maxH={"220px"}
+                       style={{filter: "blur(4px)"}}
                        alt={"thumbnail"}/>
                 <Box p={"10px"}>
-                    <Flex>
+                    <Flex mb={"10px"}>
                         {props.tags.map((value => (
                             <Tag color={"teal.400"}
                                  bgColor={"green.100"}
@@ -35,8 +37,9 @@ const BlogListCard: React.VFC<Post> = (props) => {
                               fontWeight={"semibold"}
                               onClick={() => handleLinkClick("/blog/" + props.meta.slug)}>{props.title}</Link>
                         <Text color={'gray.400'}
-                              align={"left"}
-                              fontSize={{base: "sm", sm: "md"}}>Last update: {DatetimeUtil.translate(DatetimeUtil.parse(props.meta.posted_by))}</Text>
+                              mt={"5px"}
+                              align={"center"}
+                              fontSize={{base: "sm", sm: "md"}}>最終更新日: {DatetimeUtil.translate(DatetimeUtil.parse(props.meta.posted_by))}</Text>
                     </Box>
                 </Box>
             </Box>

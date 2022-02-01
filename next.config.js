@@ -9,6 +9,16 @@ module.exports = {
         }),
     );
 
+    // ビルドエラー修正用
+    // character-reference-invalid/index.json
+    // character-entities-legacy/index.json
+    config.resolve.extensions = ['.tsx', '.ts', '.js'];
+    config.module.rules.push({
+      test: /\.json$/,
+      loader: "json-loader",
+      type: "javascript/auto"
+    })
+
     useEsbuildMinify(config);
     useEsbuildLoader(config, {
       loader: 'jsx',

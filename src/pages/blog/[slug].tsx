@@ -7,12 +7,11 @@ import {
     VStack
 } from "@chakra-ui/react";
 import React, {useEffect, useState} from "react";
-import markdownToHtml from "@/utils/markdownToHtml";
-import "highlight.js/styles/atom-one-dark-reasonable.css"
 import Fetcher from "@/utils/Fetcher";
 import {useRouter} from "next/router";
 import DatetimeUtil from "@/utils/DatetimeUtil";
 import {MdOutlineLocalPostOffice} from "react-icons/md";
+import Markdown from "@/components/Blog/Markdown";
 
 export default function Page() {
     const router = useRouter();
@@ -44,11 +43,10 @@ export default function Page() {
                         <MdOutlineLocalPostOffice size={"42px"}/>
                         <Text fontSize={{base: "20px", md: "30px"}}>{DatetimeUtil.translate(DatetimeUtil.parse(post.meta.posted_by))}</Text>
                     </HStack>
-                    <Box
-                        maxW={"3xl"}
-                        fontSize={{base: "15px", sm: "18px", md: "22px"}}
-                        pt={"10vh"}>
-                        <div dangerouslySetInnerHTML={{__html: base64Decoder(post.content)}}/>
+                    <Box maxW={"3xl"}
+                         py={"5vh"}
+                         whiteSpace={"break-spaces"}>
+                        <Markdown content={base64Decoder(post.content)}/>
                     </Box>
                 </VStack>
             </Container>
@@ -60,5 +58,5 @@ function base64Decoder(content: string) {
     const buffer = Buffer.from(content, "base64");
     const obj = buffer.toString("utf8");
 
-    return markdownToHtml(matter(obj).content);
+    return matter(obj).content;
 }
