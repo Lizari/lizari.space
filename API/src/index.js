@@ -220,22 +220,33 @@ router.post(`/blog/upload/`, upload.single("file"), async (req, res) => {
                 message: "Failed to post"
             });
         });
+    } else {
+        res.status(403).send({
+            message: "You cannot upload post",
+        })
     }
 });
 
 router.post(`/blog/delete/:slug`, async (req, res) => {
+    const { id } = req.session;
     const slug = req.params.slug;
 
-    db.deletePost(slug).then((result) => {
-        console.log(result)
-        res.send({
-            message: "That post has been deleted",
+    if (id === process.env.OWNER_ID) {
+        db.deletePost(slug).then((result) => {
+            console.log(result)
+            res.send({
+                message: "That post has been deleted",
+            });
+        },() => {
+            res.status(503).send({
+                message: "That post could not deleted",
+            });
         });
-    },() => {
-        res.status(503).send({
-            message: "That post could not deleted",
-        });
-    });
+    } else {
+        res.status(403).send({
+            message: "You cannot delete post",
+        })
+    }
 });
 
 app.use(PATH, router)
