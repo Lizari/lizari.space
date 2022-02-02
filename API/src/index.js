@@ -1,8 +1,15 @@
+require("dotenv").config();
+
 const express = require("express");
 const parser = require("./markdownParser");
 const db = require("./db");
 const fs = require("fs");
 const multer = require("multer");
+const session = require("express-session");
+const redisStore = require("connect-redis")(session)
+const { hashSync, genSaltSync, compareSync } = require("bcrypt");
+const Redis = require("ioredis");
+const {reject} = require("bcrypt/promises");
 const app = express();
 const port = process.env.PORT || 3001;
 const storage = multer.diskStorage({
@@ -15,9 +22,26 @@ const storage = multer.diskStorage({
 });
 
 const upload = multer({storage: storage});
-
+const router = express.Router();
 const DIRECTORY = "./posts";
 const PATH = "/api/v1";
+
+const redis = new Redis(process.env.REDIS_PORT || 6379, "redis");
+const sessionStore = new redisStore({ client: redis });
+
+app.use(express.json());
+app.use(express.urlencoded({ extended: true }));
+app.use(session({
+    resave: false,
+    saveUninitialized: false,
+    store: sessionStore,
+    secret: process.env.SESSION_SECRET,
+    cookie: {
+        maxage: 1000 * 60 * 30,
+        sameSite: true,
+        secure: true,
+    }
+}));
 
 app.use((req, res, next) => {
     res.header("Access-Control-Allow-Origin", "*");
@@ -27,7 +51,77 @@ app.use((req, res, next) => {
     next();
 });
 
-app.get(`${PATH}/blogs`, async (req, res) => {
+router.post(`/register`, (req, res) => {
+    if (req.body.id == null || req.body.email == null || req.body.password == null) {
+        res.status(400).send({
+            message: "Cannot registered",
+        });
+    }
+
+    const salt = genSaltSync(10);
+    const id = req.body.id;
+    const email = req.body.email;
+    const password = hashSync(req.body.password, salt);
+
+    new Promise((resolve, reject) => {
+        redis.hgetall(id, (err, obj) => {
+            if (err) reject(err);
+            if (obj)
+                res.status(400).send({
+                    message: "Already registered that ID",
+                });
+        });
+    }).then(() => {
+        redis.hset(id, "id", id, "email", email, "password", password, (err) => {
+            if (err) reject(err);
+
+            res.status(200).send({
+                message: "Success to register account",
+            });
+        });
+    }).catch((err) => {
+        console.error(err);
+        res.status(400).send({
+            message: "Error",
+        })
+    })
+});
+
+router.post(`/login`,  async (req, res) => {
+    try {
+        const id = req.body.id;
+        const password = req.body.password;
+
+        redis.hgetall(id, (err, obj) => {
+            if (!obj) {
+                return res.send({
+                    message: "Invalid ID",
+                });
+            }
+
+            const validatePassword = compareSync(password, obj.password);
+
+            if (validatePassword) {
+                req.session.id = obj.id;
+                return res.redirect(`${PATH}/blogs`);
+            } else {
+                return res.send({
+                    message: "Invalid password"
+                })
+            }
+        });
+    } catch (e) {
+        console.error(e);
+    }
+});
+
+router.post(`/logout`, (req, res) => {
+    req.session.destroy();
+    res.clearCookie(process.env.SESSION_NAME);
+    res.redirect(`${PATH}/login`);
+});
+
+router.get(`/blogs`, async (req, res) => {
     /*
         includeのクリエがあった場合纏めて返す
 
@@ -77,7 +171,7 @@ app.get(`${PATH}/blogs`, async (req, res) => {
     }
 });
 
-app.get(`${PATH}/blog/:slug`, async (req, res) => {
+router.get(`/blog/:slug`, async (req, res) => {
     const slug = req.params.slug;
     const post = await db.select("*", "posts, post_data",`WHERE posts.slug = '${slug}' AND post_data.slug = '${slug}' LIMIT 1`);
 
@@ -102,30 +196,34 @@ app.get(`${PATH}/blog/:slug`, async (req, res) => {
     }
 });
 
-app.post(`${PATH}/blog/upload/`, upload.single("file"), async (req, res) => {
-    new Promise((resolve, reject) => {
-        fs.readFile(`${DIRECTORY}/${req.file.originalname}`, "utf-8", (err, data) => {
-            if(err) reject(err);
+router.post(`/blog/upload/`, upload.single("file"), async (req, res) => {
+    const { id } = req.session;
 
-            resolve(data);
-        });
-    }).then((result) => {
-        return  parser.parse(result);
-    }).then((data) => {
-        db.insert(req.file.originalname, data);
+    if (id) {
+        new Promise((resolve, reject) => {
+            fs.readFile(`${DIRECTORY}/${req.file.originalname}`, "utf-8", (err, data) => {
+                if (err) reject(err);
 
-        res.send({
-            message: req.file.originalname + " posted",
+                resolve(data);
+            });
+        }).then((result) => {
+            return parser.parse(result);
+        }).then((data) => {
+            db.insert(req.file.originalname, data);
+
+            res.send({
+                message: req.file.originalname + " posted",
+            });
+        }).catch((err) => {
+            console.log(err);
+            res.status(400).send({
+                message: "Failed to post"
+            });
         });
-    }).catch((err) => {
-        console.log(err);
-        res.status(400).send({
-            message: "Failed to post"
-        });
-    });
+    }
 });
 
-app.post(`${PATH}/blog/delete/:slug`, async (req, res) => {
+router.post(`/blog/delete/:slug`, async (req, res) => {
     const slug = req.params.slug;
 
     db.deletePost(slug).then((result) => {
@@ -140,4 +238,5 @@ app.post(`${PATH}/blog/delete/:slug`, async (req, res) => {
     });
 });
 
+app.use(PATH, router)
 app.listen(port,() => console.log(`Listening on port ${port}`));
