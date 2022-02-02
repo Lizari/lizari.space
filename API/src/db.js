@@ -79,7 +79,7 @@ const deletePost = (slug) => {
                 if (err) reject(err);
             });
 
-            query = `DELETE FROM posts_data WHERE slug = ?;`;
+            query = `DELETE FROM post_data WHERE slug = ?;`;
             db.run(query, [slug], (err) => {
                 if (err) {
                     reject(err);
