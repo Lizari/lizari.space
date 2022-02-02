@@ -7,9 +7,10 @@ const fs = require("fs");
 const multer = require("multer");
 const session = require("express-session");
 const redisStore = require("connect-redis")(session)
-const { hashSync, genSaltSync, compareSync } = require("bcrypt");
+const { hashSync, genSaltSync, compare} = require("bcrypt");
 const Redis = require("ioredis");
 const {reject} = require("bcrypt/promises");
+const cookieParser = require("cookie-parser");
 const app = express();
 const port = process.env.PORT || 3001;
 const storage = multer.diskStorage({
@@ -29,6 +30,7 @@ const PATH = "/api/v1";
 const redis = new Redis(process.env.REDIS_PORT || 6379, "redis");
 const sessionStore = new redisStore({ client: redis });
 
+app.use(cookieParser())
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 app.use(session({
@@ -38,7 +40,6 @@ app.use(session({
     secret: process.env.SESSION_SECRET,
     cookie: {
         maxage: 1000 * 60 * 30,
-        sameSite: true,
         secure: true,
     }
 }));
@@ -88,27 +89,39 @@ router.post(`/register`, (req, res) => {
 });
 
 router.post(`/login`,  async (req, res) => {
-    try {
-        const id = req.body.id;
-        const password = req.body.password;
+    if (req.body.id == null || req.body.password == null) {
+        res.status(400).send({
+            message: "Cannot login",
+        });
+    }
 
-        redis.hgetall(id, (err, obj) => {
+    try {
+        const { id, password } = req.body;
+
+        redis.hgetall(id, async (err, obj) => {
             if (!obj) {
                 return res.send({
                     message: "Invalid ID",
                 });
             }
 
-            const validatePassword = compareSync(password, obj.password);
+            compare(password, obj.password, (err, result) => {
+                if (err) {
+                    console.log(err);
+                    return res.status(503).send({
+                        message: "Login Error occurred",
+                    });
+                }
 
-            if (validatePassword) {
-                req.session.id = obj.id;
-                return res.redirect(`${PATH}/blogs`);
-            } else {
-                return res.send({
-                    message: "Invalid password"
-                })
-            }
+                if (result) {
+                    req.session.id = obj.id;
+                    return res.redirect(`${PATH}/blogs`);
+                } else {
+                    return res.send({
+                        message: "Invalid password"
+                    })
+                }
+            });
         });
     } catch (e) {
         console.error(e);
