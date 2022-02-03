@@ -6,6 +6,7 @@ const db = require("./db");
 const fs = require("fs");
 const multer = require("multer");
 const session = require("express-session");
+const rateLimit = require('express-rate-limit')
 const redisStore = require("connect-redis")(session)
 const { hashSync, genSaltSync, compare} = require("bcrypt");
 const Redis = require("ioredis");
@@ -26,6 +27,13 @@ const upload = multer({storage: storage});
 const router = express.Router();
 const DIRECTORY = "./posts";
 const PATH = "/api/v1";
+
+const AccountLimiter = rateLimit({
+    windowMs: 5 * 60 * 1000,
+    max: 3,
+    standardHeaders: true,
+    legacyHeaders: false,
+});
 
 const redis = new Redis(process.env.REDIS_PORT || 6379, "redis");
 const sessionStore = new redisStore({ client: redis });
@@ -53,7 +61,7 @@ app.use((req, res, next) => {
     next();
 });
 
-router.post(`/register`, (req, res) => {
+router.post(`/register`, AccountLimiter, (req, res) => {
     if (req.body.id == null || req.body.email == null || req.body.password == null) {
         res.status(400).send({
             message: "Cannot registered",
@@ -89,7 +97,7 @@ router.post(`/register`, (req, res) => {
     })
 });
 
-router.post(`/login`,  async (req, res) => {
+router.post(`/login`, AccountLimiter, async (req, res) => {
     if (req.body.id == null || req.body.password == null) {
         res.status(400).send({
             message: "Cannot login",
