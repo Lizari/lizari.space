@@ -41,6 +41,7 @@ app.use(session({
     cookie: {
         maxage: 1000 * 60 * 30,
         secure: true,
+        httpOnly: false
     }
 }));
 
@@ -115,7 +116,7 @@ router.post(`/login`,  async (req, res) => {
 
                 if (result) {
                     req.session.id = obj.id;
-                    return res.redirect(`${PATH}/blogs`);
+                    return res.redirect(`/`);
                 } else {
                     return res.send({
                         message: "Invalid password"
