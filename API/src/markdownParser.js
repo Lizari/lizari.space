@@ -14,12 +14,12 @@ exports.parse = function (content) {
         header[obj[0]] = obj[1];
     }
 
+    // サムネイルとtagはnull許容する
     return {
         title: header.title,
-        date: header.date,
         description: header.description,
-        thumbnail: header.thumbnail,
-        tags: tagsToArray(header.tags),
+        thumbnail: header.thumbnail ? header.thumbnail : "",
+        tags: tagsToArray(header.tags) ? tagsToArray(header.tags) : "",
         content: encoded,
     };
 };

@@ -5,7 +5,6 @@ export type Post = {
         updated_by: string,
     },
     title: string,
-    written_by?: string
     description: string,
     thumbnail?: string,
     tags: Array<string>,

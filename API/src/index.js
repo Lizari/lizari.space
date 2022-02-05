@@ -11,7 +11,6 @@ const redisStore = require("connect-redis")(session)
 const { hashSync, genSaltSync, compare} = require("bcrypt");
 const Redis = require("ioredis");
 const {reject} = require("bcrypt/promises");
-const cookieParser = require("cookie-parser");
 const app = express();
 const port = process.env.PORT || 3001;
 const storage = multer.diskStorage({
@@ -161,7 +160,6 @@ router.get(`/blogs`, async (req, res) => {
                         updated_by: post.updated_by,
                     },
                     title: post.title,
-                    written_date: post.date,
                     description: post.description,
                     thumbnail: post.thumbnail,
                     tags: post.tags.split(","),
@@ -205,7 +203,6 @@ router.get(`/blog/:slug`, async (req, res) => {
                 updated_by: post[0].updated_by,
             },
             title: post[0].title,
-            written_date: post[0].date,
             description: post[0].description,
             thumbnail: post[0].thumbnail,
             tags: post[0].tags.split(","),
