@@ -1,5 +1,6 @@
 const sqlite3 = require("sqlite3");
 const fs = require("fs");
+const {sha256} = require("./utils");
 
 const DIRECTORY = "./posts";
 const DB = "./blog.db";
@@ -35,7 +36,6 @@ const select = (column, table, filter = "") => {
 
     *1 {
          title: string
-         date: string,
          description: string,
          thumbnail: string,
          tags: Array[String],
@@ -44,15 +44,16 @@ const select = (column, table, filter = "") => {
  */
 const insert = (slug, post_data) => {
     const db = new sqlite3.Database(DB);
-    let query = `INSERT INTO posts (slug, posted_by, updated_by) VALUES (?, datetime('now', 'localtime'), datetime('now', 'localtime')) ON CONFLICT(slug) DO UPDATE SET updated_by = datetime('now', 'localtime');`;
+    const hashed = sha256(slug);
+    let query = `INSERT INTO posts (slug, path, posted_by, updated_by) VALUES (?, ?, datetime('now', 'localtime'), datetime('now', 'localtime')) ON CONFLICT(slug) DO UPDATE SET updated_by = datetime('now', 'localtime');`;
 
-    db.run(query, [slug], (err) => {
+    db.run(query, [hashed, slug], (err) => {
         if (err) {
             console.log(err);
             return;
         }
-        query = 'INSERT INTO post_data (slug, title, written_by, description, thumbnail, tags, content) VALUES (?, ?, ?, ?, ?, ?, ?) ON CONFLICT(slug) DO UPDATE SET title = ?, description = ?, thumbnail = ?, tags = ?, content = ?;';
-        db.run(query, [slug, post_data.title, post_data.date, post_data.description, post_data.thumbnail, post_data.tags, post_data.content, post_data.title, post_data.description, post_data.thumbnail, post_data.tags, post_data.content], (err) => {
+        query = 'INSERT INTO post_data (slug, title, description, thumbnail, tags, content) VALUES (?, ?, ?, ?, ?, ?) ON CONFLICT(slug) DO UPDATE SET title = ?, description = ?, thumbnail = ?, tags = ?, content = ?;';
+        db.run(query, [hashed, post_data.title, post_data.description, post_data.thumbnail, post_data.tags, post_data.content, post_data.title, post_data.description, post_data.thumbnail, post_data.tags, post_data.content], (err) => {
             if (err) {
                 console.log(err);
             }
@@ -102,14 +103,14 @@ const initialize = () => {
     });
 
     const db = new sqlite3.Database(DB);
-    let query = "CREATE TABLE IF NOT EXISTS posts(slug VARCHAR(255) NOT NULL PRIMARY KEY, posted_by DATE, updated_by DATE);"
+    let query = "CREATE TABLE IF NOT EXISTS posts(slug VARCHAR(255) NOT NULL PRIMARY KEY, path VARCHAR(255) NOT NULL, posted_by DATE, updated_by DATE);"
 
     db.run(query, [], (err) => {
         if (err) {
             console.log(err);
             return;
         }
-        query = "CREATE TABLE IF NOT EXISTS post_data(slug VARCHAR(255) NOT NULL PRIMARY KEY, title VARCHAR(36), written_by VARCHAR(10), description VARCHAR(255), thumbnail VARCHAR(150), tags VARCHAR(255), content VARCHAR(65545));"
+        query = "CREATE TABLE IF NOT EXISTS post_data(slug VARCHAR(255) NOT NULL PRIMARY KEY, title VARCHAR(36), written_by VARCHAR(10), description VARCHAR(255), thumbnail VARCHAR(150), tags VARCHAR(255), content TEXT);"
         db.run(query, [], (err) => {
             if (err) {
                 console.log(err);

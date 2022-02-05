@@ -1,3 +1,5 @@
+const {base64Encode} = require("./utils");
+
 /*
     @param { String } content - markdownの中身
 */
