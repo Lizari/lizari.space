@@ -1,6 +1,6 @@
 import React from "react";
 import {Prism as SyntaxHighlighter} from "react-syntax-highlighter";
-import {vscDarkPlus} from "react-syntax-highlighter/dist/cjs/styles/prism";
+import {vs, vscDarkPlus} from "react-syntax-highlighter/dist/cjs/styles/prism";
 import remarkGfm from "remark-gfm";
 import remarkBreaks from "remark-breaks";
 import ReactMarkdown from "react-markdown";
@@ -20,7 +20,6 @@ import {
     Tr, UnorderedList, useColorMode
 } from "@chakra-ui/react";
 import {ExternalLinkIcon} from "@chakra-ui/icons";
-import {arduinoLight} from "react-syntax-highlighter/dist/cjs/styles/hljs";
 
 const Markdown: React.VFC<{ content: string }> = (props) => {
     const { colorMode } = useColorMode();
@@ -32,14 +31,17 @@ const Markdown: React.VFC<{ content: string }> = (props) => {
                        ]}
                       components={{
                               code: ({node, inline, className, children, ...props}) => {
-                                  const match = /language-(\w+)/.exec(className || '')
+                                  const filename = className ? className.split(":")[1] : "";
+                                  const match = /language-(\w+)/.exec(className || '');
+                                  const inlineName = filename !== null ? filename + "\n\n" : "";
                                   return !inline && match ? (
-                                      <SyntaxHighlighter children={String(children).replace(/\n$/, "")}
-                                                         style={ colorMode == "dark" ? vscDarkPlus : arduinoLight }
+                                      <SyntaxHighlighter style={colorMode == "dark" ? vscDarkPlus : vs}
                                                          language={match[1]}
                                                          PreTag={"div"}
-                                                         {...props}/>
-                                  ) : <Code>{children}</Code>
+                                                         {...props}>
+                                          {String(inlineName + children).replace(/\n$/, "")}
+                                      </SyntaxHighlighter>
+                                  ) : <Code className={className} {...props}>{children}</Code>
                               },
                               li: (props) => {
                                 return <ListItem fontSize={{base: "16px", md: "17px"}}>{props.children}</ListItem>
