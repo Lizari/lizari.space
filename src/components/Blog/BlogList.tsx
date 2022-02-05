@@ -8,17 +8,15 @@ const BlogList: React.VFC<{
     posts: Array<Post>,
 }> = (props) => {
     return(
-        <div>
-            <Box>
+        <Box align={"center"}>
                 <SimpleGrid minChildWidth={"300px"} spacingY={"20px"}>
                     {props.posts.sort((a: Post, b: Post) => {
                         return DatetimeUtil.compare(DatetimeUtil.parse(a.meta.posted_by), DatetimeUtil.parse(b.meta.posted_by))
                     }).map((post: Post) => {
-                       return <BlogListCard {...post}/>
+                        return <BlogListCard {...post}/>
                     })}
                 </SimpleGrid>
-            </Box>
-        </div>
+        </Box>
     )
 }
 
