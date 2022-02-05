@@ -19,15 +19,8 @@ exports.parse = function (content) {
         title: header.title,
         description: header.description,
         thumbnail: header.thumbnail ? header.thumbnail : "",
-        tags: tagsToArray(header.tags) ? tagsToArray(header.tags) : "",
+        tags: header.tags.split(",") ? header.tags.split(",") : "",
         content: encoded,
     };
 };
 
-function tagsToArray(tags) {
-    return tags.match(/\[(.*?)]/)[1].split(",");
-}
-
-function base64Encode(text) {
-    return Buffer.from(text).toString("base64");
-}
