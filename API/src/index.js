@@ -67,7 +67,7 @@ app.use((req, res, next) => {
 
 router.post(`/register`, AccountLimiter, (req, res) => {
     if (req.body.id == null || req.body.email == null || req.body.password == null) {
-        res.status(400).send({
+        return res.status(400).send({
             message: "Cannot registered",
         });
     }
@@ -81,7 +81,7 @@ router.post(`/register`, AccountLimiter, (req, res) => {
         redis.hgetall(id, (err, obj) => {
             if (err) reject(err);
             if (obj)
-                res.status(400).send({
+                return res.status(400).send({
                     message: "Already registered that ID",
                 });
         });
@@ -89,13 +89,13 @@ router.post(`/register`, AccountLimiter, (req, res) => {
         redis.hset(id, "id", id, "email", email, "password", password, (err) => {
             if (err) reject(err);
 
-            res.status(200).send({
+            return res.status(200).send({
                 message: "Success to register account",
             });
         });
     }).catch((err) => {
         console.error(err);
-        res.status(400).send({
+        return res.status(400).send({
             message: "Error",
         })
     })
@@ -103,7 +103,7 @@ router.post(`/register`, AccountLimiter, (req, res) => {
 
 router.post(`/login`, AccountLimiter, async (req, res) => {
     if (req.body.id == null || req.body.password == null) {
-        res.status(403).send({
+        return res.status(403).send({
             message: "Cannot login",
         });
     }

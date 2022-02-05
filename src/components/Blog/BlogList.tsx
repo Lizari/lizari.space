@@ -9,7 +9,7 @@ const BlogList: React.VFC<{
 }> = (props) => {
     return(
         <div>
-            <Box align={"center"}>
+            <Box>
                 <SimpleGrid minChildWidth={"300px"} spacingY={"20px"}>
                     {props.posts.sort((a: Post, b: Post) => {
                         return DatetimeUtil.compare(DatetimeUtil.parse(a.meta.posted_by), DatetimeUtil.parse(b.meta.posted_by))

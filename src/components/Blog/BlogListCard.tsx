@@ -11,6 +11,7 @@ const BlogListCard: React.VFC<Post> = (props) => {
     return (
         <div>
             <Box maxW={{base: "300px", md: "350px", lg: "400px"}}
+                 align={"center"}
                  boxShadow={"lg"}
                  borderWidth={"1px"}
                  borderRadius={"lg"}
