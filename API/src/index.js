@@ -22,13 +22,19 @@ const storage = multer.diskStorage({
     }
 });
 
-const upload = multer({storage: storage});
+const upload = multer({
+    storage: storage,
+    onError: (err, next) => {
+        console.log(err);
+        next(err);
+    },
+});
 const router = express.Router();
 const DIRECTORY = "./posts";
-const PATH = "/api/v1";
+const PATH = "/api/v2";
 
 const AccountLimiter = rateLimit({
-    windowMs: 5 * 60 * 1000,
+    windowMs: 3 * 60 * 1000,
     max: 3,
     standardHeaders: true,
     legacyHeaders: false,
@@ -37,7 +43,6 @@ const AccountLimiter = rateLimit({
 const redis = new Redis(process.env.REDIS_PORT || 6379, "redis");
 const sessionStore = new redisStore({ client: redis });
 
-app.use(cookieParser())
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 app.use(session({
@@ -98,7 +103,7 @@ router.post(`/register`, AccountLimiter, (req, res) => {
 
 router.post(`/login`, AccountLimiter, async (req, res) => {
     if (req.body.id == null || req.body.password == null) {
-        res.status(400).send({
+        res.status(403).send({
             message: "Cannot login",
         });
     }
@@ -108,7 +113,7 @@ router.post(`/login`, AccountLimiter, async (req, res) => {
 
         redis.hgetall(id, async (err, obj) => {
             if (!obj) {
-                return res.send({
+                return res.status(403).send({
                     message: "Invalid ID",
                 });
             }
@@ -123,7 +128,9 @@ router.post(`/login`, AccountLimiter, async (req, res) => {
 
                 if (result) {
                     req.session.id = obj.id;
-                    return res.redirect(`/`);
+                    return res.status(200).send({
+                        messge: "Successful login"
+                    });
                 } else {
                     return res.send({
                         message: "Invalid password"
@@ -138,7 +145,6 @@ router.post(`/login`, AccountLimiter, async (req, res) => {
 
 router.post(`/logout`, (req, res) => {
     req.session.destroy();
-    res.clearCookie(process.env.SESSION_NAME);
     res.redirect(`${PATH}/login`);
 });
 
@@ -196,7 +202,7 @@ router.get(`/blog/:slug`, async (req, res) => {
     const post = await db.select("*", "posts, post_data",`WHERE posts.slug = '${slug}' AND post_data.slug = '${slug}' LIMIT 1`);
 
     if (post[0]) {
-        res.send({
+        res.status(200).send({
             meta: {
                 slug: post[0].slug,
                 posted_by: post[0].posted_by,
@@ -230,7 +236,7 @@ router.post(`/blog/upload/`, upload.single("file"), async (req, res) => {
         }).then((data) => {
             db.insert(req.file.originalname, data);
 
-            res.send({
+            res.status(200).send({
                 message: req.file.originalname + " posted",
             });
         }).catch((err) => {
