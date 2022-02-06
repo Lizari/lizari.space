@@ -26,6 +26,7 @@ const BlogListCard: React.VFC<Post> = (props) => {
       borderRadius={'lg'}
       overflow={'hidden'}
       bgColor={'white'}
+      textAlign={"center"}
     >
       <Center>
         <Image
