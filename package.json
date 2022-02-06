@@ -5,6 +5,8 @@
     "build": "next build",
     "start": "next start",
     "lint": "next lint",
+    "lint:fix": "next lint --fix",
+    "format": "prettier --write --ignore-path .gitignore src",
     "typecheck": "tsc --noEmit"
   },
   "dependencies": {
