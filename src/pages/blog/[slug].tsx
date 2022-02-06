@@ -1,36 +1,36 @@
-import { Box, Container, HStack, Text, VStack } from '@chakra-ui/react'
-import matter from 'gray-matter'
-import { useRouter } from 'next/router'
-import React, { useEffect, useState } from 'react'
-import { MdOutlineLocalPostOffice } from 'react-icons/md'
+import { Box, Container, HStack, Text, VStack } from '@chakra-ui/react';
+import matter from 'gray-matter';
+import { useRouter } from 'next/router';
+import React, { useEffect, useState } from 'react';
+import { MdOutlineLocalPostOffice } from 'react-icons/md';
 
-import Markdown from '@/components/Blog/Markdown'
-import Header from '@/components/Common/Header'
-import DatetimeUtil from '@/utils/DatetimeUtil'
-import Fetcher from '@/utils/Fetcher'
+import Markdown from '@/components/Blog/Markdown';
+import Header from '@/components/Common/Header';
+import DatetimeUtil from '@/utils/DatetimeUtil';
+import Fetcher from '@/utils/Fetcher';
 
 export default function Page() {
-  const router = useRouter()
-  const [slug, setSlug] = useState('')
+  const router = useRouter();
+  const [slug, setSlug] = useState('');
 
   useEffect(() => {
-    if (router && router.query) setSlug((router.query.slug as string) ?? '')
-  }, [router])
+    if (router && router.query) setSlug((router.query.slug as string) ?? '');
+  }, [router]);
 
-  const { post, isLoading, isError } = Fetcher.usePost(slug)
+  const { post, isLoading, isError } = Fetcher.usePost(slug);
 
   if (isLoading || !post)
     return (
       <div>
         <Header title={'Now Loading'} />
       </div>
-    )
+    );
   if (isError)
     return (
       <div>
         <Header title={'Error!'} />
       </div>
-    )
+    );
 
   return (
     <div>
@@ -57,12 +57,12 @@ export default function Page() {
         </VStack>
       </Container>
     </div>
-  )
+  );
 }
 
 function base64Decoder(content: string) {
-  const buffer = Buffer.from(content, 'base64')
-  const obj = buffer.toString('utf8')
+  const buffer = Buffer.from(content, 'base64');
+  const obj = buffer.toString('utf8');
 
-  return matter(obj).content
+  return matter(obj).content;
 }

@@ -1,4 +1,4 @@
-import { ExternalLinkIcon } from '@chakra-ui/icons'
+import { ExternalLinkIcon } from '@chakra-ui/icons';
 import {
   Code,
   Divider,
@@ -15,24 +15,27 @@ import {
   Tr,
   UnorderedList,
   useColorMode,
-} from '@chakra-ui/react'
-import React from 'react'
-import ReactMarkdown from 'react-markdown'
-import { Prism as SyntaxHighlighter } from 'react-syntax-highlighter'
-import { vs, vscDarkPlus } from 'react-syntax-highlighter/dist/cjs/styles/prism'
-import remarkBreaks from 'remark-breaks'
-import remarkGfm from 'remark-gfm'
+} from '@chakra-ui/react';
+import React from 'react';
+import ReactMarkdown from 'react-markdown';
+import { Prism as SyntaxHighlighter } from 'react-syntax-highlighter';
+import {
+  vs,
+  vscDarkPlus,
+} from 'react-syntax-highlighter/dist/cjs/styles/prism';
+import remarkBreaks from 'remark-breaks';
+import remarkGfm from 'remark-gfm';
 
 const Markdown: React.VFC<{ content: string }> = (props) => {
-  const { colorMode } = useColorMode()
+  const { colorMode } = useColorMode();
   return (
     <ReactMarkdown
       remarkPlugins={[[remarkGfm, { singleTilde: false }], remarkBreaks]}
       components={{
         code: ({ inline, className, children, ...props }) => {
-          const filename = className ? className.split(':')[1] : ''
-          const match = /language-(\w+)/.exec(className || '')
-          const inlineName = filename !== null ? filename + '\n\n' : ''
+          const filename = className ? className.split(':')[1] : '';
+          const match = /language-(\w+)/.exec(className || '');
+          const inlineName = filename !== null ? filename + '\n\n' : '';
           return !inline && match ? (
             <SyntaxHighlighter
               style={colorMode == 'dark' ? vscDarkPlus : vs}
@@ -46,24 +49,24 @@ const Markdown: React.VFC<{ content: string }> = (props) => {
             <Code className={className} {...props}>
               {children}
             </Code>
-          )
+          );
         },
         li: (props) => {
           return (
             <ListItem fontSize={{ base: '16px', md: '17px' }}>
               {props.children}
             </ListItem>
-          )
+          );
         },
         blockquote: (props) => {
-          return <Code p={2}>{props.children}</Code>
+          return <Code p={2}>{props.children}</Code>;
         },
         p: (props) => {
           return (
             <Text fontSize={{ base: '16px', md: '17px' }}>
               {props.children}
             </Text>
-          )
+          );
         },
         h2: (props) => {
           return (
@@ -73,7 +76,7 @@ const Markdown: React.VFC<{ content: string }> = (props) => {
             >
               {props.children}
             </Text>
-          )
+          );
         },
         h3: (props) => {
           return (
@@ -83,26 +86,26 @@ const Markdown: React.VFC<{ content: string }> = (props) => {
             >
               {props.children}
             </Text>
-          )
+          );
         },
         hr: () => {
-          return <Divider orientation={'horizontal'} borderColor={'gray'} />
+          return <Divider orientation={'horizontal'} borderColor={'gray'} />;
         },
         strong: (props) => {
           return (
             <Text fontWeight={'semibold'} fontSize={{ sm: '16px', md: '18px' }}>
               {props.children}
             </Text>
-          )
+          );
         },
         tr: (props) => {
-          return <Tr>{props.children}</Tr>
+          return <Tr>{props.children}</Tr>;
         },
         td: (props) => {
-          return <Td>{props.children}</Td>
+          return <Td>{props.children}</Td>;
         },
         th: (props) => {
-          return <Th>{props.children}</Th>
+          return <Th>{props.children}</Th>;
         },
         a: (props) => {
           return (
@@ -110,7 +113,7 @@ const Markdown: React.VFC<{ content: string }> = (props) => {
               {props.children}
               <ExternalLinkIcon mx={'3px'} mb={'4px'} />
             </Link>
-          )
+          );
         },
         ul: UnorderedList,
         ol: OrderedList,
@@ -123,7 +126,7 @@ const Markdown: React.VFC<{ content: string }> = (props) => {
     >
       {props.content}
     </ReactMarkdown>
-  )
-}
+  );
+};
 
-export default Markdown
+export default Markdown;

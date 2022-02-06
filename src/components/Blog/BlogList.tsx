@@ -1,12 +1,12 @@
-import { Box, SimpleGrid } from '@chakra-ui/react'
-import React from 'react'
+import { Box, SimpleGrid } from '@chakra-ui/react';
+import React from 'react';
 
-import BlogListCard from '@/components/Blog/BlogListCard'
-import { Post } from '@/entity/Post'
-import DatetimeUtil from '@/utils/DatetimeUtil'
+import BlogListCard from '@/components/Blog/BlogListCard';
+import { Post } from '@/entity/Post';
+import DatetimeUtil from '@/utils/DatetimeUtil';
 
 const BlogList: React.VFC<{
-  posts: Array<Post>
+  posts: Array<Post>;
 }> = (props) => {
   return (
     <Box>
@@ -16,14 +16,14 @@ const BlogList: React.VFC<{
             return DatetimeUtil.compare(
               DatetimeUtil.parse(a.meta.posted_by),
               DatetimeUtil.parse(b.meta.posted_by),
-            )
+            );
           })
           .map((post: Post) => {
-            return <BlogListCard key={post.meta.slug} {...post} />
+            return <BlogListCard key={post.meta.slug} {...post} />;
           })}
       </SimpleGrid>
     </Box>
-  )
-}
+  );
+};
 
-export default BlogList
+export default BlogList;

@@ -1,5 +1,5 @@
-import { Center, Heading, HStack, Image } from '@chakra-ui/react'
-import React from 'react'
+import { Center, Heading, HStack, Image } from '@chakra-ui/react';
+import React from 'react';
 
 const TopBanner = () => {
   return (
@@ -21,7 +21,7 @@ const TopBanner = () => {
         </Heading>
       </Center>
     </HStack>
-  )
-}
+  );
+};
 
-export default TopBanner
+export default TopBanner;

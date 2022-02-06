@@ -1,10 +1,10 @@
-import { Container, Stack, Text } from '@chakra-ui/react'
-import React from 'react'
+import { Container, Stack, Text } from '@chakra-ui/react';
+import React from 'react';
 
-import FadeIn from '@/components/Common/FadeIn'
-import Header from '@/components/Common/Header'
-import LinkIcons from '@/components/Home/LinkIcons'
-import TopBanner from '@/components/Home/TopBanner'
+import FadeIn from '@/components/Common/FadeIn';
+import Header from '@/components/Common/Header';
+import LinkIcons from '@/components/Home/LinkIcons';
+import TopBanner from '@/components/Home/TopBanner';
 
 export default function Home() {
   return (
@@ -34,5 +34,5 @@ export default function Home() {
         </FadeIn>
       </Container>
     </div>
-  )
+  );
 }

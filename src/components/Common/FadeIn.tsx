@@ -1,9 +1,9 @@
-import { motion } from 'framer-motion'
-import React from 'react'
+import { motion } from 'framer-motion';
+import React from 'react';
 
 type Props = {
-  children: React.ReactNode
-}
+  children: React.ReactNode;
+};
 
 const FadeIn = ({ children }: Props) => {
   return (
@@ -19,7 +19,7 @@ const FadeIn = ({ children }: Props) => {
     >
       {children}
     </motion.div>
-  )
-}
+  );
+};
 
-export default FadeIn
+export default FadeIn;

@@ -1,6 +1,6 @@
-import { HStack, IconButton } from '@chakra-ui/react'
-import React from 'react'
-import { FaGithub, FaTwitch, FaTwitter } from 'react-icons/fa'
+import { HStack, IconButton } from '@chakra-ui/react';
+import React from 'react';
+import { FaGithub, FaTwitch, FaTwitter } from 'react-icons/fa';
 
 const LinkIcons = () => {
   return (
@@ -33,7 +33,7 @@ const LinkIcons = () => {
         href={'https://twitch.tv/xps_mun'}
       />
     </HStack>
-  )
-}
+  );
+};
 
-export default LinkIcons
+export default LinkIcons;

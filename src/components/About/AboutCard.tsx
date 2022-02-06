@@ -1,12 +1,12 @@
-import { Box, Center, Text } from '@chakra-ui/react'
-import React, { ReactNode } from 'react'
+import { Box, Center, Text } from '@chakra-ui/react';
+import React, { ReactNode } from 'react';
 
-import FadeIn from '@/components/Common/FadeIn'
+import FadeIn from '@/components/Common/FadeIn';
 
 type Props = {
-  column: string
-  children: ReactNode
-}
+  column: string;
+  children: ReactNode;
+};
 
 const AboutCard: React.VFC<Props> = (props) => {
   return (
@@ -35,7 +35,7 @@ const AboutCard: React.VFC<Props> = (props) => {
         </Box>
       </Center>
     </FadeIn>
-  )
-}
+  );
+};
 
-export default AboutCard
+export default AboutCard;

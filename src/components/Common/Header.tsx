@@ -4,17 +4,17 @@ import {
   Link,
   Spacer,
   useColorMode,
-} from '@chakra-ui/react'
-import Head from 'next/head'
-import React from 'react'
-import { FaMoon, FaSun } from 'react-icons/fa'
+} from '@chakra-ui/react';
+import Head from 'next/head';
+import React from 'react';
+import { FaMoon, FaSun } from 'react-icons/fa';
 
 type HeaderProps = {
-  title: string
-}
+  title: string;
+};
 
 const Header: React.VFC<HeaderProps> = (props) => {
-  const { colorMode, toggleColorMode } = useColorMode()
+  const { colorMode, toggleColorMode } = useColorMode();
 
   return (
     <div>
@@ -45,7 +45,7 @@ const Header: React.VFC<HeaderProps> = (props) => {
         />
       </HStack>
     </div>
-  )
-}
+  );
+};
 
-export default Header
+export default Header;

@@ -1,32 +1,41 @@
-import { Box, Flex, Image, Link, Tag, TagLabel, Text } from '@chakra-ui/react'
-import { useRouter } from 'next/router'
-import React from 'react'
+import {
+  Box,
+  Center,
+  Flex,
+  Image,
+  Link,
+  Tag,
+  TagLabel,
+  Text,
+} from '@chakra-ui/react';
+import { useRouter } from 'next/router';
+import React from 'react';
 
-import { Post } from '@/entity/Post'
-import DatetimeUtil from '@/utils/DatetimeUtil'
+import { Post } from '@/entity/Post';
+import DatetimeUtil from '@/utils/DatetimeUtil';
 
 const BlogListCard: React.VFC<Post> = (props) => {
-  const router = useRouter()
-  const handleLinkClick = (url: string) => router.push(url)
+  const router = useRouter();
+  const handleLinkClick = (url: string) => router.push(url);
 
   return (
     <Box
       maxW={{ base: '300px', md: '350px', lg: '400px' }}
-      alignItems={'center'}
-      justifyContent={'center'}
       boxShadow={'lg'}
       borderWidth={'1px'}
       borderRadius={'lg'}
       overflow={'hidden'}
       bgColor={'white'}
     >
-      <Image
-        src={props.thumbnail}
-        objectFit={'cover'}
-        maxH={'220px'}
-        style={{ filter: 'blur(4px)' }}
-        alt={'thumbnail'}
-      />
+      <Center>
+        <Image
+          src={props.thumbnail}
+          objectFit={'cover'}
+          maxH={'220px'}
+          style={{ filter: 'blur(4px)' }}
+          alt={'thumbnail'}
+        />
+      </Center>
       <Box p={'10px'}>
         <Flex mb={'10px'}>
           {props.tags.map((value) => (
@@ -61,7 +70,7 @@ const BlogListCard: React.VFC<Post> = (props) => {
         </Box>
       </Box>
     </Box>
-  )
-}
+  );
+};
 
-export default BlogListCard
+export default BlogListCard;
