@@ -1,7 +1,7 @@
 import {HStack, IconButton, Link, Spacer, useColorMode} from "@chakra-ui/react";
+import Head from "next/head";
 import React from "react";
 import {FaMoon, FaSun} from "react-icons/fa";
-import Head from "next/head";
 
 type HeaderProps = {
     title: string,

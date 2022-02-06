@@ -1,9 +1,4 @@
-import React from "react";
-import {Prism as SyntaxHighlighter} from "react-syntax-highlighter";
-import {vs, vscDarkPlus} from "react-syntax-highlighter/dist/cjs/styles/prism";
-import remarkGfm from "remark-gfm";
-import remarkBreaks from "remark-breaks";
-import ReactMarkdown from "react-markdown";
+import {ExternalLinkIcon} from "@chakra-ui/icons";
 import {
     Code,
     Divider,
@@ -19,18 +14,23 @@ import {
     Thead,
     Tr, UnorderedList, useColorMode
 } from "@chakra-ui/react";
-import {ExternalLinkIcon} from "@chakra-ui/icons";
+import React from "react";
+import ReactMarkdown from "react-markdown";
+import {Prism as SyntaxHighlighter} from "react-syntax-highlighter";
+import {vs, vscDarkPlus} from "react-syntax-highlighter/dist/cjs/styles/prism";
+import remarkBreaks from "remark-breaks";
+import remarkGfm from "remark-gfm";
 
 const Markdown: React.VFC<{ content: string }> = (props) => {
     const { colorMode } = useColorMode();
     return(
-        <ReactMarkdown children={props.content}
+        <ReactMarkdown
                        remarkPlugins={[
                            [remarkGfm, { singleTilde: false }],
                            remarkBreaks
                        ]}
                       components={{
-                              code: ({node, inline, className, children, ...props}) => {
+                              code: ({inline, className, children, ...props}) => {
                                   const filename = className ? className.split(":")[1] : "";
                                   const match = /language-(\w+)/.exec(className || '');
                                   const inlineName = filename !== null ? filename + "\n\n" : "";
@@ -88,7 +88,7 @@ const Markdown: React.VFC<{ content: string }> = (props) => {
                               tbody: Tbody,
                           }
                       }
-                       skipHtml/>
+                       skipHtml>{props.content}</ReactMarkdown>
     );
 }
 

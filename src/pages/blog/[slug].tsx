@@ -1,24 +1,25 @@
-import matter from "gray-matter";
-import Header from "@/components/Common/Header";
 import {
     Box,
     Container, HStack,
     Text,
     VStack
 } from "@chakra-ui/react";
-import React, {useEffect, useState} from "react";
-import Fetcher from "@/utils/Fetcher";
+import matter from "gray-matter";
 import {useRouter} from "next/router";
-import DatetimeUtil from "@/utils/DatetimeUtil";
+import React, {useEffect, useState} from "react";
 import {MdOutlineLocalPostOffice} from "react-icons/md";
+
 import Markdown from "@/components/Blog/Markdown";
+import Header from "@/components/Common/Header";
+import DatetimeUtil from "@/utils/DatetimeUtil";
+import Fetcher from "@/utils/Fetcher";
 
 export default function Page() {
     const router = useRouter();
     const [slug, setSlug] = useState("");
 
     useEffect(() => {
-        if (router && router.query) setSlug(router.query.slug! as string);
+        if (router && router.query) setSlug(router.query.slug as string ?? "");
     }, [router]);
 
     const { post, isLoading, isError } = Fetcher.usePost(slug);

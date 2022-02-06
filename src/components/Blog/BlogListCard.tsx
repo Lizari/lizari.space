@@ -1,7 +1,8 @@
-import {Box, Text, Image, Flex, Tag, Link, TagLabel} from "@chakra-ui/react";
-import React from "react";
-import {Post} from "@/entity/Post";
+import {Box, Flex, Image, Link, Tag, TagLabel,Text} from "@chakra-ui/react";
 import {useRouter} from "next/router";
+import React from "react";
+
+import {Post} from "@/entity/Post";
 import DatetimeUtil from "@/utils/DatetimeUtil";
 
 const BlogListCard: React.VFC<Post> = (props) => {
@@ -10,6 +11,8 @@ const BlogListCard: React.VFC<Post> = (props) => {
 
     return (
         <Box maxW={{base: "300px", md: "350px", lg: "400px"}}
+             alignItems={"center"}
+             justifyContent={"center"}
              boxShadow={"lg"}
              borderWidth={"1px"}
              borderRadius={"lg"}
@@ -23,7 +26,8 @@ const BlogListCard: React.VFC<Post> = (props) => {
             <Box p={"10px"}>
                 <Flex mb={"10px"}>
                     {props.tags.map((value => (
-                        <Tag color={"teal.400"}
+                        <Tag key={value}
+                             color={"teal.400"}
                              bgColor={"green.100"}
                              mr={"3px"}>
                             <TagLabel>{value}</TagLabel>

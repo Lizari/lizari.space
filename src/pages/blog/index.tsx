@@ -1,7 +1,8 @@
-import Header from "@/components/Common/Header";
-import BlogList from "@/components/Blog/BlogList";
 import {Box, Center, Container, Spinner} from "@chakra-ui/react";
 import React from "react";
+
+import BlogList from "@/components/Blog/BlogList";
+import Header from "@/components/Common/Header";
 import Fetcher from "@/utils/Fetcher";
 
 export default function Blog() {

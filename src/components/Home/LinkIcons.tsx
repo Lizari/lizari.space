@@ -1,6 +1,6 @@
 import {HStack, IconButton} from "@chakra-ui/react";
-import {FaGithub, FaTwitch, FaTwitter} from "react-icons/fa";
 import React from "react";
+import {FaGithub, FaTwitch, FaTwitter} from "react-icons/fa";
 
 const LinkIcons = () => {
     return(

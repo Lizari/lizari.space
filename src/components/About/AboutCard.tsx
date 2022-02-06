@@ -1,5 +1,6 @@
-import React, {ReactNode} from "react";
 import {Box, Center, Text} from "@chakra-ui/react";
+import React, {ReactNode} from "react";
+
 import FadeIn from "@/components/Common/FadeIn";
 
 type Props = {
