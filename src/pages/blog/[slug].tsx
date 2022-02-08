@@ -36,7 +36,7 @@ export default function Page() {
     <div>
       <Container maxW={'5xl'}>
         <Header title={post.title} />
-        <VStack margin={"auto"} maxW={'3xl'} mt={{ base: '40px', md: '80px' }}>
+        <VStack margin={'auto'} maxW={'3xl'} mt={{ base: '40px', md: '80px' }}>
           <Box pt={'20px'}>
             <Text
               fontWeight={'bold'}
