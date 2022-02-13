@@ -11,8 +11,8 @@ const fetcher = async (url: string): Promise<any> =>
 
 const usePosts = (include: boolean) => {
   const { data, error } = include
-    ? useSWR<Array<Post>, Error>(`/blogs?include=true`, fetcher)
-    : useSWR<Array<Post>, Error>(`/blogs`, fetcher);
+    ? useSWR<Array<Post>, Error>(`/blog/all?include=true`, fetcher)
+    : useSWR<Array<Post>, Error>(`/blog/all`, fetcher);
 
   return {
     posts: data,
