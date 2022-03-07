@@ -1,4 +1,4 @@
-import { Box, SimpleGrid } from '@chakra-ui/react';
+import { Center, Stack } from '@chakra-ui/react';
 import React from 'react';
 
 import BlogListCard from '@/components/Blog/BlogListCard';
@@ -9,8 +9,8 @@ const BlogList: React.VFC<{
   posts: Array<Post>;
 }> = (props) => {
   return (
-    <Box>
-      <SimpleGrid minChildWidth={'300px'} spacingY={'20px'}>
+    <Center>
+      <Stack direction={{ base: 'column', md: 'row' }} spacing={'20px'}>
         {props.posts
           .sort((a: Post, b: Post) => {
             return DatetimeUtil.compare(
@@ -21,8 +21,8 @@ const BlogList: React.VFC<{
           .map((post: Post) => {
             return <BlogListCard key={post.meta.slug} {...post} />;
           })}
-      </SimpleGrid>
-    </Box>
+      </Stack>
+    </Center>
   );
 };
 

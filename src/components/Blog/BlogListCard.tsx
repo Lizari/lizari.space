@@ -20,7 +20,7 @@ const BlogListCard: React.VFC<Post> = (props) => {
 
   return (
     <Box
-      maxW={{ base: '300px', md: '350px', lg: '400px' }}
+      w={{ base: '300px', md: '350px', lg: '400px' }}
       boxShadow={'lg'}
       borderWidth={'1px'}
       borderRadius={'lg'}
@@ -53,9 +53,9 @@ const BlogListCard: React.VFC<Post> = (props) => {
         <Box>
           <Link
             color={'gray.900'}
-            fontSize={{ base: 'sm', sm: 'xl', xl: '2xl' }}
+            fontSize={{ base: 'md', sm: 'xl', xl: '2xl' }}
             fontWeight={'semibold'}
-            onClick={() => handleLinkClick('/blog/' + props.meta.slug)}
+            onClick={() => handleLinkClick(`/blog/${props.meta.slug}`)}
           >
             {props.title}
           </Link>
