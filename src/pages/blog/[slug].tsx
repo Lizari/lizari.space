@@ -18,24 +18,30 @@ export default function Page() {
   }, [router]);
 
   const { post, isLoading, isError } = Fetcher.usePost(slug);
+  const path = `blog/${slug}`;
 
   if (isLoading || !post)
     return (
       <div>
-        <Header title={'Now Loading'} />
+        <Header title={'Now Loading'} path={path} />
       </div>
     );
   if (isError)
     return (
       <div>
-        <Header title={'Error!'} />
+        <Header title={'Error!'} path={path} />
       </div>
     );
 
   return (
     <div>
       <Container maxW={'5xl'}>
-        <Header title={post.title} />
+        <Header
+          title={post.title}
+          path={path}
+          description={post.description}
+          image={post.thumbnail}
+        />
         <VStack margin={'auto'} maxW={'3xl'} mt={{ base: '40px', md: '80px' }}>
           <Box pt={'20px'}>
             <Text

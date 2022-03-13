@@ -10,7 +10,7 @@ export default function Blog() {
   return (
     <div>
       <Container maxW={'5xl'}>
-        <Header title={'Blog'} />
+        <Header title={'Blog'} path={'blog'} />
         <Stack
           mt={{ base: 20, md: 20 }}
           spacing={{ base: 8, md: 10 }}

@@ -10,7 +10,7 @@ export default function Home() {
   return (
     <div>
       <Container maxW={'5xl'}>
-        <Header title={'Home'} />
+        <Header title={'Home'} path={''} />
         <FadeIn>
           <Stack
             textAlign={'center'}
