@@ -57,7 +57,11 @@ export default function Page() {
               {DatetimeUtil.translate(DatetimeUtil.parse(post.meta.posted_by))}
             </Text>
           </HStack>
-          <Box maxW={'3xl'} py={'5vh'} whiteSpace={'break-spaces'}>
+          <Box
+            w={{ base: '95%', md: '100%' }}
+            py={'5vh'}
+            whiteSpace={'break-spaces'}
+          >
             <Markdown content={base64Decoder(post.content)} />
           </Box>
         </VStack>

@@ -76,7 +76,7 @@ const Markdown: React.VFC<{ content: string }> = (props) => {
           return (
             <Text
               fontWeight={'extrabold'}
-              fontSize={{ base: '35px', md: '45px', xl: '50px' }}
+              fontSize={{ base: '20px', md: '45px', xl: '50px' }}
             >
               {props.children}
             </Text>
@@ -86,7 +86,7 @@ const Markdown: React.VFC<{ content: string }> = (props) => {
           return (
             <Text
               fontWeight={'semibold'}
-              fontSize={{ base: '20px', md: '25px', xl: '35px' }}
+              fontSize={{ base: '14px', md: '25px', xl: '35px' }}
             >
               {props.children}
             </Text>

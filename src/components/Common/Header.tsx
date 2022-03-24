@@ -30,7 +30,6 @@ const Header: React.VFC<HeaderProps> = (props) => {
           property={'og:url'}
           content={`https://web.lizari.space/${props.path}`}
         />
-        <meta property={'og:title'} content={props.title} />
         <meta property={'og:site_name'} content={props.title} />
         <meta property={'og:description'} content={description} />
         <meta property={'og:type'} content={'website'} />
