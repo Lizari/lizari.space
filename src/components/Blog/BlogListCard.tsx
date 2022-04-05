@@ -3,7 +3,8 @@ import {
   Center,
   Flex,
   Image,
-  Link, Spacer,
+  Link,
+  Spacer,
   Tag,
   TagLabel,
   Text,
@@ -49,11 +50,11 @@ const BlogListCard: React.VFC<Post> = (props) => {
               <TagLabel>{value}</TagLabel>
             </Tag>
           ))}
-          <Spacer/>
-          <Text
-            color={'gray.400'}
-            fontSize={{ base: 'sm', sm: 'md' }}>
-            {`Latest update: ${DatetimeUtil.translate(DatetimeUtil.parse(props.meta.posted_by))}`}
+          <Spacer />
+          <Text color={'gray.400'} fontSize={{ base: 'sm', sm: 'md' }}>
+            {`Latest update: ${DatetimeUtil.translate(
+              DatetimeUtil.parse(props.meta.posted_by),
+            )}`}
           </Text>
         </Flex>
         <Box>
@@ -65,15 +66,14 @@ const BlogListCard: React.VFC<Post> = (props) => {
           >
             {props.title}
           </Link>
-          <Box mt={"2px"}>
-            <Text color={"gray.500"}
-                  fontSize={{ base: 'sm', sm: 'md' }}>
+          <Box mt={'2px'}>
+            <Text color={'gray.500'} fontSize={{ base: 'sm', sm: 'md' }}>
               {props.description}
             </Text>
           </Box>
-          </Box>
         </Box>
       </Box>
+    </Box>
   );
 };
 

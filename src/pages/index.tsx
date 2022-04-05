@@ -1,9 +1,11 @@
-import { Container, Stack, Text } from '@chakra-ui/react';
+import { Container, Stack } from '@chakra-ui/react';
 import React from 'react';
 
 import FadeIn from '@/components/Common/FadeIn';
 import Header from '@/components/Common/Header';
 import LinkIcons from '@/components/Home/LinkIcons';
+import ProfileCard from '@/components/Home/ProfileCard';
+import SkillSetCard from '@/components/Home/SkillSetCard';
 import TopBanner from '@/components/Home/TopBanner';
 
 export default function Home() {
@@ -11,27 +13,23 @@ export default function Home() {
     <div>
       <Container maxW={'5xl'}>
         <Header title={'Home'} path={''} />
-        <FadeIn>
-          <Stack
-            textAlign={'center'}
-            align={'center'}
-            mt={10}
-            spacing={{ base: 8, md: 10 }}
-            py={{ base: 20, md: 28 }}
-          >
+        <Stack
+          textAlign={'center'}
+          align={'center'}
+          spacing={12}
+          py={{ base: 20, md: 28 }}
+        >
+          <FadeIn>
             <TopBanner />
-            <Text
-              color={'gray.500'}
-              fontSize={{ base: 'md', sm: 'xl', xl: '2xl' }}
-              maxW={'3xl'}
-            >
-              Student - I like games and anime. I&rsquo;m also a hobbyist when
-              it comes to programming, and have experience with Java,
-              Javascript, and Python.
-            </Text>
-            <LinkIcons />
-          </Stack>
-        </FadeIn>
+          </FadeIn>
+          <FadeIn>
+            <ProfileCard />
+          </FadeIn>
+          <FadeIn>
+            <SkillSetCard />
+          </FadeIn>
+          <LinkIcons />
+        </Stack>
       </Container>
     </div>
   );
