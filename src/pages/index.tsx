@@ -12,7 +12,7 @@ export default function Home() {
   return (
     <div>
       <Container maxW={'5xl'}>
-        <Header title={'Home'} path={''} />
+        <Header title={'Home'} path={'#'} />
         <Stack
           textAlign={'center'}
           align={'center'}

@@ -6,7 +6,7 @@ import Header from '@/components/Common/Header';
 import Fetcher from '@/utils/Fetcher';
 
 export default function Blog() {
-  const { posts, isLoading, isError } = Fetcher.usePosts(true);
+  const { articles, isLoading, isError } = Fetcher.useArticles();
   return (
     <div>
       <Container maxW={'5xl'}>
@@ -16,12 +16,12 @@ export default function Blog() {
           spacing={{ base: 8, md: 10 }}
           py={{ base: 20, md: 28 }}
         >
-          {isLoading || isError || !posts ? (
+          {isLoading || isError || !articles ? (
             <Center>
               <Spinner />
             </Center>
           ) : (
-            <BlogList posts={posts} />
+            <BlogList articles={articles} />
           )}
         </Stack>
       </Container>

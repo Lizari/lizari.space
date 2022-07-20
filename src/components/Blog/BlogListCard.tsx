@@ -12,10 +12,10 @@ import {
 import { useRouter } from 'next/router';
 import React from 'react';
 
-import { Post } from '@/entity/Post';
 import DatetimeUtil from '@/utils/DatetimeUtil';
+import { Article } from '@/entity/Article';
 
-const BlogListCard: React.VFC<Post> = (props) => {
+const BlogListCard: React.FC<Article> = (props) => {
   const router = useRouter();
   const handleLinkClick = (url: string) => router.push(url);
 
@@ -52,9 +52,7 @@ const BlogListCard: React.VFC<Post> = (props) => {
           ))}
           <Spacer />
           <Text color={'gray.400'} fontSize={{ base: 'sm', sm: 'md' }}>
-            {`Latest update: ${DatetimeUtil.translate(
-              DatetimeUtil.parse(props.meta.posted_by),
-            )}`}
+            {`Latest update: ${DatetimeUtil.translate(props.updatedAt)}`}
           </Text>
         </Flex>
         <Box>
@@ -62,7 +60,7 @@ const BlogListCard: React.VFC<Post> = (props) => {
             color={'gray.900'}
             fontSize={{ base: 'md', sm: 'xl', xl: '2xl' }}
             fontWeight={'bold'}
-            onClick={() => handleLinkClick(`/blog/${props.meta.slug}`)}
+            onClick={() => handleLinkClick(`/blog/${props.title}`)}
           >
             {props.title}
           </Link>

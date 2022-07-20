@@ -1,6 +1,6 @@
 import useSWR from 'swr';
 
-import { Post } from '@/entity/Post';
+import { Article } from '@/entity/Article';
 import { Config } from '@/libs/Config';
 
 const fetcher = async (url: string): Promise<any> =>
@@ -9,29 +9,27 @@ const fetcher = async (url: string): Promise<any> =>
     method: 'GET',
   }).then((res) => res.json());
 
-const usePosts = (include: boolean) => {
-  const { data, error } = include
-    ? useSWR<Array<Post>, Error>(`/blog/all?include=true`, fetcher)
-    : useSWR<Array<Post>, Error>(`/blog/all`, fetcher);
+const useArticles = () => {
+  const { data, error } = useSWR<Article[], Error>(`/article`, fetcher);
 
   return {
-    posts: data,
+    articles: data,
     isLoading: !error && !data,
     isError: error,
   };
 };
 
-const usePost = (slug: string) => {
-  const { data, error } = useSWR<Post, Error>(`/blog/${slug}`, fetcher);
+const useArticle = (title: string) => {
+  const { data, error } = useSWR<Article, Error>(`/article/${title}`, fetcher);
 
   return {
-    post: data,
+    article: data,
     isLoading: !error && !data,
     isError: error,
   };
 };
 
 export default {
-  usePost,
-  usePosts,
+  useArticle,
+  useArticles,
 };

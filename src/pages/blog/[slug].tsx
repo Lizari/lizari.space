@@ -17,10 +17,10 @@ export default function Page() {
     if (router && router.query) setSlug((router.query.slug as string) ?? '');
   }, [router]);
 
-  const { post, isLoading, isError } = Fetcher.usePost(slug);
+  const { article, isLoading, isError } = Fetcher.useArticle(slug);
   const path = `blog/${slug}`;
 
-  if (isLoading || !post)
+  if (isLoading || !article)
     return (
       <div>
         <Header title={'Now Loading'} path={path} />
@@ -37,10 +37,10 @@ export default function Page() {
     <div>
       <Container maxW={'5xl'}>
         <Header
-          title={post.title}
+          title={article.title}
           path={path}
-          description={post.description}
-          image={post.thumbnail}
+          description={article.description}
+          image={article.thumbnail}
         />
         <VStack margin={'auto'} maxW={'3xl'} mt={{ base: '40px', md: '80px' }}>
           <Box pt={'20px'}>
@@ -48,13 +48,13 @@ export default function Page() {
               fontWeight={'bold'}
               fontSize={{ base: '20px', sm: '40px', md: '50px' }}
             >
-              {post.title}
+              {article.title}
             </Text>
           </Box>
           <HStack>
             <MdOutlineLocalPostOffice size={'42px'} />
             <Text fontSize={{ base: '20px', md: '30px' }}>
-              {DatetimeUtil.translate(DatetimeUtil.parse(post.meta.posted_by))}
+              {DatetimeUtil.translate(article.publishedAt)}
             </Text>
           </HStack>
           <Box
@@ -62,7 +62,7 @@ export default function Page() {
             py={'5vh'}
             whiteSpace={'break-spaces'}
           >
-            <Markdown content={base64Decoder(post.content)} />
+            <Markdown content={base64Decoder(article.content)} />
           </Box>
         </VStack>
       </Container>

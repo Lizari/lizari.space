@@ -18,15 +18,15 @@ import {
 } from '@chakra-ui/react';
 import React from 'react';
 import ReactMarkdown from 'react-markdown';
-import { Prism as SyntaxHighlighter } from 'react-syntax-highlighter';
+import { PrismAsyncLight as SyntaxHighlighter } from 'react-syntax-highlighter';
 import {
   vs,
   vscDarkPlus,
-} from 'react-syntax-highlighter/dist/cjs/styles/prism';
+} from 'react-syntax-highlighter/dist/esm/styles/prism';
 import remarkBreaks from 'remark-breaks';
 import remarkGfm from 'remark-gfm';
 
-const Markdown: React.VFC<{ content: string }> = (props) => {
+const Markdown: React.FC<{ content: string }> = (props) => {
   const { colorMode } = useColorMode();
   return (
     <ReactMarkdown
@@ -42,7 +42,8 @@ const Markdown: React.VFC<{ content: string }> = (props) => {
           const inlineName: string = filename !== null ? filename + '\n\n' : '';
           return !inline && match ? (
             <SyntaxHighlighter
-              style={colorMode == 'dark' ? vscDarkPlus : vs}
+              // @ts-ignore overloadエラーがでる原因不明
+              style={colorMode === 'dark' ? vscDarkPlus : vs}
               language={match[1]}
               PreTag={'div'}
               {...props}
