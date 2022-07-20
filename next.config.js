@@ -1,8 +1,13 @@
 const { ESBuildMinifyPlugin } = require('esbuild-loader');
+const withTM = require('next-transpile-modules')(['react-syntax-highlighter'])
 
-module.exports = {
+module.exports = withTM({
   reactStrictMode: true,
+  future: {
+    webpack5: true,
+  },
   webpack: (config, { webpack, isServer }) => {
+    config.experiments = {};
     config.plugins.push(
         new webpack.ProvidePlugin({
           React: 'react',
@@ -35,7 +40,7 @@ module.exports = {
     }
     return config;
   },
-}
+});
 
 function useEsbuildMinify(config, options) {
   const { minimizer } = config.optimization;
