@@ -71,8 +71,5 @@ export default function Page() {
 }
 
 function base64Decoder(content: string) {
-  const buffer = Buffer.from(content, 'base64');
-  const obj = buffer.toString('utf8');
-
-  return matter(obj).content;
+  return matter(content).content;
 }
