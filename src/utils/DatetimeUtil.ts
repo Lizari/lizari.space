@@ -7,10 +7,12 @@ const compare = (a: Date, b: Date) => {
 };
 
 const translate = (date: Date) => {
-  /*
-        getMonth()は 0~11の値で返されるので+1する。
-        getDay()は曜日、getDate()は日で返される。
-     */
+  // SWRでFetchされたデータがDateで返さない
+  // なのでここで改めてDateとして宣言してる
+  date = new Date(date);
+
+  // getMonth()は 0~11の値で返されるので+1する。
+  // getDay()は曜日、getDate()は日で返される。
   return `${date.getFullYear()}/${date.getMonth() + 1}/${date.getDate()}`;
 };
 
