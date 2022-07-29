@@ -3,10 +3,17 @@ import React from 'react';
 
 import BlogList from '@/components/Blog/BlogList';
 import Header from '@/components/Common/Header';
-import Fetcher from '@/utils/Fetcher';
+import { InferGetStaticPropsType } from 'next';
+import { Config } from '@/libs/Config';
+import { Article } from '@/entity/Article';
+import { useArticlesSWR } from '@/hooks/useArticlesSWR';
 
-export default function Blog() {
-  const { articles, isLoading, isError } = Fetcher.useArticles();
+type Props = InferGetStaticPropsType<typeof getStaticProps>;
+
+export default function Blog({ fallbackData }: Props) {
+  const { data } = useArticlesSWR(fallbackData);
+  const articles = data;
+
   return (
     <div>
       <Container maxW={'5xl'}>
@@ -16,15 +23,26 @@ export default function Blog() {
           spacing={{ base: 8, md: 10 }}
           py={{ base: 20, md: 28 }}
         >
-          {isLoading || isError || !articles ? (
+          {!articles ? (
             <Center>
               <Spinner />
             </Center>
           ) : (
-            <BlogList articles={articles} />
+            <BlogList articles={articles!} />
           )}
         </Stack>
       </Container>
     </div>
   );
+}
+
+export async function getStaticProps() {
+  const endpoint = Config.API_URL + '/article';
+  const articles = (await fetch(endpoint).then((x) => x.json())) as Article[];
+
+  return {
+    props: {
+      fallbackData: articles,
+    },
+  };
 }

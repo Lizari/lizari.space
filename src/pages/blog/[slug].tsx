@@ -1,44 +1,42 @@
 import { Box, Container, HStack, Text, VStack } from '@chakra-ui/react';
-import matter from 'gray-matter';
-import { useRouter } from 'next/router';
-import React, { useEffect, useState } from 'react';
+import React from 'react';
 import { MdOutlineLocalPostOffice } from 'react-icons/md';
 
 import Markdown from '@/components/Blog/Markdown';
 import Header from '@/components/Common/Header';
 import DatetimeUtil from '@/utils/DatetimeUtil';
-import Fetcher from '@/utils/Fetcher';
+import { GetStaticPaths, GetStaticProps, InferGetStaticPropsType } from 'next';
+import { useArticleSWR } from '@/hooks/useArticleSWR';
+import { Config } from '@/libs/Config';
+import { Article } from '@/entity/Article';
 
-export default function Page() {
-  const router = useRouter();
-  const [slug, setSlug] = useState('');
+type PathParams = {
+  slug: string;
+};
 
-  useEffect(() => {
-    if (router && router.query) setSlug((router.query.slug as string) ?? '');
-  }, [router]);
+type Props = InferGetStaticPropsType<typeof getStaticProps>;
 
-  const { article, isLoading, isError } = Fetcher.useArticle(slug);
-  const path = `blog/${slug}`;
-
-  if (isLoading || !article)
+export default function Blog({ fallbackData }: Props) {
+  const { data } = useArticleSWR(fallbackData);
+  if (!data) {
     return (
-      <div>
-        <Header title={'Now Loading'} path={path} />
-      </div>
+      <>
+        <Header title={'Now Loading'} path={`/blog/${data!.title}`} />
+      </>
     );
-  if (isError)
-    return (
-      <div>
-        <Header title={'Error!'} path={path} />
-      </div>
-    );
+  }
+
+  const article: Article = {
+    ...data,
+    content: Buffer.from(data.content, 'base64').toString(),
+  };
 
   return (
     <div>
       <Container maxW={'5xl'}>
         <Header
           title={article.title}
-          path={path}
+          path={`blog/${data.title}`}
           description={article.description}
           image={article.thumbnail}
         />
@@ -62,7 +60,7 @@ export default function Page() {
             py={'5vh'}
             whiteSpace={'break-spaces'}
           >
-            <Markdown content={base64Decoder(article.content)} />
+            <Markdown content={article.content} />
           </Box>
         </VStack>
       </Container>
@@ -70,6 +68,27 @@ export default function Page() {
   );
 }
 
-function base64Decoder(content: string) {
-  return matter(content).content;
-}
+export const getStaticPaths: GetStaticPaths<PathParams> = async () => {
+  const endpoint = Config.API_URL + '/article';
+  const articles = (await fetch(endpoint).then((x) => x.json())) as Article[];
+  const paths = articles.map((article) => {
+    return { params: { slug: article.title } };
+  });
+
+  return {
+    paths,
+    fallback: false,
+  };
+};
+
+export const getStaticProps: GetStaticProps = async (context) => {
+  const { slug } = context.params as PathParams;
+  const endpoint = Config.API_URL + `/article/${slug}`;
+  const article = (await fetch(endpoint).then((x) => x.json())) as Article;
+
+  return {
+    props: {
+      fallbackData: article,
+    },
+  };
+};

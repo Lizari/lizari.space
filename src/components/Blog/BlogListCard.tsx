@@ -60,7 +60,7 @@ const BlogListCard: React.FC<Article> = (props) => {
             color={'gray.900'}
             fontSize={{ base: 'md', sm: 'xl', xl: '2xl' }}
             fontWeight={'bold'}
-            onClick={() => handleLinkClick(`/blog/${props.id}`)}
+            onClick={() => handleLinkClick(`/blog/${props.title}`)}
           >
             {props.title}
           </Link>

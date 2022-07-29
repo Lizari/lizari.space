@@ -3,6 +3,8 @@ const parse = (datetime: string) => {
 };
 
 const compare = (a: Date, b: Date) => {
+  a = new Date(a);
+  b = new Date(b);
   return b.getTime() - a.getTime();
 };
 
