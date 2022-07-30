@@ -11,12 +11,15 @@ const BlogList: React.FC<{
   return (
     <Center>
       <Stack direction={{ base: 'column', md: 'row' }} spacing={'20px'}>
-        {props.articles
+        {props.articles.length >= 2 ? props.articles
           .sort((a: Article, b: Article) => {
             return DatetimeUtil.compare(a.publishedAt, b.publishedAt);
           })
           .map((article: Article) => {
             return <BlogListCard key={article.id} {...article} />;
+          }) :
+          props.articles.map((article: Article) => {
+            return <BlogListCard key={article.id} {...article} />
           })}
       </Stack>
     </Center>
