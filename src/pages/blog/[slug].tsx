@@ -70,7 +70,8 @@ export default function Blog({ fallbackData }: Props) {
 
 export const getStaticPaths: GetStaticPaths<PathParams> = async () => {
   const endpoint = Config.API_URL + '/article';
-  const articles = (await fetch(endpoint).then((x) => x.json())) as Article[];
+  const data = await fetch(endpoint);
+  const articles = await data.json() as Article[];
   const paths = articles.map((article) => {
     return { params: { slug: article.title } };
   });
