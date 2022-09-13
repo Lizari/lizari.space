@@ -2,8 +2,8 @@ import { Box, Container, HStack, Text, VStack } from '@chakra-ui/react';
 import React from 'react';
 import { MdOutlineLocalPostOffice } from 'react-icons/md';
 
-import Markdown from '@/components/Blog/Markdown';
-import Header from '@/components/Common/Header';
+import Markdown from '@/components/blog/Markdown';
+import Header from '@/components/common/Header';
 import DatetimeUtil from '@/utils/DatetimeUtil';
 import { GetStaticPaths, GetStaticProps, InferGetStaticPropsType } from 'next';
 import { useArticleSWR } from '@/hooks/useArticleSWR';
@@ -70,8 +70,9 @@ export default function Blog({ fallbackData }: Props) {
 
 export const getStaticPaths: GetStaticPaths<PathParams> = async () => {
   const endpoint = Config.API_URL + '/article';
-  const data = await fetch(endpoint);
-  const articles = await data.json() as Article[];
+  const articles = (await fetch(endpoint).then((res) =>
+    res.json(),
+  )) as Article[];
   const paths = articles.map((article) => {
     return { params: { slug: article.title } };
   });

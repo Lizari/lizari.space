@@ -1,54 +1,51 @@
-import { Box, List, ListIcon, ListItem, Text } from '@chakra-ui/react';
-import { CgProfile } from 'react-icons/cg';
-import { FaBirthdayCake, FaGamepad } from 'react-icons/fa';
-import { GiSkills } from 'react-icons/gi';
+import { Box, List, ListItem, Text } from '@chakra-ui/react';
 
-const ProfileCard = () => {
+const ProfileCard: React.FC = () => {
   return (
-    <Box borderWidth={'1px'} borderRadius={'3%'} w={'full'} p={'15px'}>
-      <Text
-        textAlign={'center'}
-        fontSize={{ base: 'xl', md: '3xl', xl: '4xl' }}
-      >
-        Simple Profile
+    <Box minW={'100%'}>
+      <Text as={'u'} fontSize={'2xl'} fontWeight={'semibold'}>
+        Bio
       </Text>
-      <Text
-        mt={'15px'}
-        textAlign={'center'}
-        fontSize={{ base: 'sm', sm: 'md', xl: 'md' }}
-      >
-        宮城県出身の情報系の学校に通ってる学生です。高校生3年生からプログラミングにハマってここまで来ました。下記に簡単なプロフィールを載せておきます。
-      </Text>
-      <List
-        mt={'5px'}
-        spacing={4}
-        fontSize={{ base: 'md', sm: 'xl', xl: '2xl' }}
-        textAlign={'start'}
-      >
-        <ListItem>
-          <ListIcon as={CgProfile} color={'mediumaquamarine'} />
-          HOSHI KAITO
+      <List flexWrap={'wrap'} justifyContent={'space-between'}>
+        <ListItem display={'flex'}>
+          <Text
+            textAlign={'right'}
+            fontWeight={'bold'}
+            p={'0.5em 1.0em 0.5em 0.5em'}
+          >
+            2002
+          </Text>
+          <Box
+            borderLeft={'2px'}
+            borderColor={'black'}
+            width={'calc(100% - 8.5em)'}
+            p={'0.5em 2.0em 3.0em'}
+          >
+            <Text fontWeight={'semibold'}>出身地</Text>
+            <Text>宮城県で生まれた</Text>
+          </Box>
         </ListItem>
-        <ListItem>
-          <ListIcon as={FaBirthdayCake} color={'mediumaquamarine'} />
-          2002/12/10
-        </ListItem>
-        <ListItem>
-          <ListIcon as={GiSkills} color={'mediumaquamarine'} />
-          Java Python JavaScript TypeScript
-        </ListItem>
-        <ListItem>
-          <ListIcon as={FaGamepad} color={'mediumaquamarine'} />
-          Programming Anime VideoGame
+        <ListItem display={'flex'}>
+          <Text
+            textAlign={'right'}
+            fontWeight={'bold'}
+            p={'0.5em 1.0em 0.5em 0.5em'}
+          >
+            2020
+          </Text>
+          <Box
+            borderLeft={'2px'}
+            borderColor={'black'}
+            width={'calc(100% - 8.5em)'}
+            p={'0.5em 2.0em 3.0em'}
+          >
+            <Text fontWeight={'semibold'}>プログラミングを知る</Text>
+            <Text>
+              高校3年生の時に、Minecraftを通してプログラミングに興味を抱き学び始めた
+            </Text>
+          </Box>
         </ListItem>
       </List>
-      <Text
-        mt={'15px'}
-        fontSize={{ base: 'sm', sm: 'md', xl: 'xl' }}
-        color={'red.300'}
-      >
-        Lizariは本名ではなくハンドルネームです。
-      </Text>
     </Box>
   );
 };

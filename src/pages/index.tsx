@@ -1,35 +1,35 @@
-import { Container, Stack } from '@chakra-ui/react';
+import { Center, Container, Stack } from '@chakra-ui/react';
 import React from 'react';
 
-import FadeIn from '@/components/Common/FadeIn';
-import Header from '@/components/Common/Header';
-import LinkIcons from '@/components/Home/LinkIcons';
-import ProfileCard from '@/components/Home/ProfileCard';
-import SkillSetCard from '@/components/Home/SkillSetCard';
-import TopBanner from '@/components/Home/TopBanner';
+import FadeIn from '@/components/common/FadeIn';
+import SlideIn from '@/components/common/SlideIn';
+import Header from '@/components/common/Header';
+import LinkIcons from '@/components/home/LinkIcons';
+import ProfileCard from '@/components/home/ProfileCard';
+import TopBanner from '@/components/home/TopBanner';
+import HobbyCard from '@/components/home/HobbyCard';
 
 export default function Home() {
   return (
     <div>
       <Container maxW={'5xl'}>
         <Header title={'Home'} path={'#'} />
-        <Stack
-          textAlign={'center'}
-          align={'center'}
-          spacing={12}
-          py={{ base: 20, md: 28 }}
-        >
-          <FadeIn>
-            <TopBanner />
-          </FadeIn>
-          <FadeIn>
-            <ProfileCard />
-          </FadeIn>
-          <FadeIn>
-            <SkillSetCard />
-          </FadeIn>
-          <LinkIcons />
-        </Stack>
+        <SlideIn>
+          <TopBanner />
+        </SlideIn>
+        <Center>
+          <Stack spacing={12}>
+            <FadeIn>
+              <ProfileCard />
+            </FadeIn>
+            <FadeIn>
+              <HobbyCard />
+            </FadeIn>
+            <FadeIn>
+              <LinkIcons />
+            </FadeIn>
+          </Stack>
+        </Center>
       </Container>
     </div>
   );

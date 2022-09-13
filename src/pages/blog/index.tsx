@@ -1,8 +1,8 @@
 import { Center, Container, Spinner, Stack } from '@chakra-ui/react';
 import React from 'react';
 
-import BlogList from '@/components/Blog/BlogList';
-import Header from '@/components/Common/Header';
+import BlogList from '@/components/blog/BlogList';
+import Header from '@/components/common/Header';
 import { InferGetStaticPropsType } from 'next';
 import { Config } from '@/libs/Config';
 import { Article } from '@/entity/Article';
