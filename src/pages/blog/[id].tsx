@@ -7,7 +7,7 @@ import Header from '@/components/common/Header';
 import DatetimeUtil from '@/utils/DatetimeUtil';
 import { GetStaticPaths, GetStaticProps, InferGetStaticPropsType } from 'next';
 import { Article } from '@/entity/Article';
-import { client } from '@/libs/client';
+import { Client } from '@/libs/Client';
 import { NodeHtmlMarkdown } from 'node-html-markdown';
 
 type PathParams = {
@@ -57,9 +57,9 @@ export default function Blog(props: Props) {
 }
 
 export const getStaticPaths: GetStaticPaths<PathParams> = async () => {
-  const articles: Article[] = await client
-    .get({ endpoint: 'articles' })
-    .then((res) => res.contents);
+  const articles: Article[] = await Client.get({ endpoint: 'articles' }).then(
+    (res) => res.contents,
+  );
   const paths = articles.map((article) => {
     return { params: { id: article.id } };
   });
@@ -72,7 +72,7 @@ export const getStaticPaths: GetStaticPaths<PathParams> = async () => {
 
 export const getStaticProps: GetStaticProps = async (context) => {
   const { id } = context.params as PathParams;
-  const article: Article = await client.get({
+  const article: Article = await Client.get({
     endpoint: 'articles',
     contentId: id,
   });

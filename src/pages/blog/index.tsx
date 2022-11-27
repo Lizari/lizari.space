@@ -5,7 +5,7 @@ import BlogList from '@/components/blog/BlogList';
 import Header from '@/components/common/Header';
 import { InferGetStaticPropsType } from 'next';
 import { Article } from '@/entity/Article';
-import { client } from '@/libs/client';
+import { Client } from '@/libs/Client';
 
 type Props = InferGetStaticPropsType<typeof getStaticProps>;
 
@@ -35,7 +35,7 @@ export default function Blog(props: Props) {
 }
 
 export async function getStaticProps() {
-  const articles: Article[] = await client
+  const articles: Article[] = await Client
     .get({ endpoint: 'articles' })
     .then((res) => res.contents);
 
