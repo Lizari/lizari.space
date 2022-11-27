@@ -31,10 +31,9 @@ const BlogListCard: React.FC<Article> = (props) => {
     >
       <Center>
         <Image
-          src={props.thumbnail}
+          src={props.eyecatch.url}
           objectFit={'cover'}
           maxH={'220px'}
-          style={{ filter: 'blur(4px)' }}
           alt={'thumbnail'}
         />
       </Center>
@@ -60,7 +59,7 @@ const BlogListCard: React.FC<Article> = (props) => {
             color={'gray.900'}
             fontSize={{ base: 'md', sm: 'xl', xl: '2xl' }}
             fontWeight={'bold'}
-            onClick={() => handleLinkClick(`/blog/${props.title}`)}
+            onClick={() => handleLinkClick(`/blog/${props.id}`)}
           >
             {props.title}
           </Link>

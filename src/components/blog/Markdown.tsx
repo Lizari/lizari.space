@@ -33,13 +33,17 @@ const Markdown: React.FC<{ content: string }> = (props) => {
       remarkPlugins={[[remarkGfm, { singleTilde: false }], remarkBreaks]}
       components={{
         code: ({ inline, className, children, ...props }) => {
-          const filename: string | null = className
-            ? className.split(':')[1]
-            : null;
+          const data: string | undefined = children[0]
+            ?.toString()
+            .split('\n')[0];
+          const language: string | undefined = data?.split(':')[0];
+          const filename: string | undefined = data?.split(':')[1];
           const match: RegExpExecArray | null = /language-(\w+)/.exec(
-            className || '',
+            language || '',
           );
-          const inlineName: string = filename !== null ? filename + '\n\n' : '';
+          const inlineName: string = filename !== null ? filename + '\n' : '';
+          const content = children[0]?.toString().replace(data!, '');
+
           return !inline && match ? (
             <SyntaxHighlighter
               // @ts-ignore overloadエラーがでる原因不明
@@ -48,7 +52,7 @@ const Markdown: React.FC<{ content: string }> = (props) => {
               PreTag={'div'}
               {...props}
             >
-              {String(inlineName + children).replace(/\n$/, '')}
+              {String(inlineName + content).replace(/\n$/, '')}
             </SyntaxHighlighter>
           ) : (
             <Code className={className} {...props}>

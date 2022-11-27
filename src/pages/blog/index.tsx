@@ -4,15 +4,13 @@ import React from 'react';
 import BlogList from '@/components/blog/BlogList';
 import Header from '@/components/common/Header';
 import { InferGetStaticPropsType } from 'next';
-import { Config } from '@/libs/Config';
 import { Article } from '@/entity/Article';
-import { useArticlesSWR } from '@/hooks/useArticlesSWR';
+import { client } from '@/libs/client';
 
 type Props = InferGetStaticPropsType<typeof getStaticProps>;
 
-export default function Blog({ fallbackData }: Props) {
-  const { data } = useArticlesSWR(fallbackData);
-  const articles = data;
+export default function Blog(props: Props) {
+  const articles = props.articles;
 
   return (
     <div>
@@ -37,12 +35,13 @@ export default function Blog({ fallbackData }: Props) {
 }
 
 export async function getStaticProps() {
-  const endpoint = Config.API_URL + '/article';
-  const articles = (await fetch(endpoint).then((x) => x.json())) as Article[];
+  const articles: Article[] = await client
+    .get({ endpoint: 'articles' })
+    .then((res) => res.contents);
 
   return {
     props: {
-      fallbackData: articles,
+      articles: articles,
     },
   };
 }
