@@ -1,12 +1,16 @@
 export type Article = {
-  id: number;
-  published: boolean;
+  id: string;
+  description: string;
+  content: string;
+  title: string;
+  tags: string[];
+  eyecatch: {
+    url: string;
+    height: number;
+    width: number;
+  };
   createdAt: Date;
   updatedAt: Date;
   publishedAt: Date;
-  title: string;
-  description: string;
-  thumbnail: string;
-  tags: string[];
-  content: string;
+  revisedAt: Date;
 };

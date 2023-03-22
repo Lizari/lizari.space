@@ -6,39 +6,27 @@ import Markdown from '@/components/blog/Markdown';
 import Header from '@/components/common/Header';
 import DatetimeUtil from '@/utils/DatetimeUtil';
 import { GetStaticPaths, GetStaticProps, InferGetStaticPropsType } from 'next';
-import { useArticleSWR } from '@/hooks/useArticleSWR';
-import { Config } from '@/libs/Config';
 import { Article } from '@/entity/Article';
+import { Client } from '@/libs/Client';
+import { NodeHtmlMarkdown } from 'node-html-markdown';
 
 type PathParams = {
-  slug: string;
+  id: string;
 };
 
 type Props = InferGetStaticPropsType<typeof getStaticProps>;
 
-export default function Blog({ fallbackData }: Props) {
-  const { data } = useArticleSWR(fallbackData);
-  if (!data) {
-    return (
-      <>
-        <Header title={'Now Loading'} path={`/blog/${data!.title}`} />
-      </>
-    );
-  }
-
-  const article: Article = {
-    ...data,
-    content: Buffer.from(data.content, 'base64').toString(),
-  };
+export default function Blog(props: Props) {
+  const article: Article = props.article;
 
   return (
     <div>
       <Container maxW={'5xl'}>
         <Header
           title={article.title}
-          path={`blog/${data.title}`}
+          path={`blog/${article.id}`}
           description={article.description}
-          image={article.thumbnail}
+          image={article.eyecatch.url}
         />
         <VStack margin={'auto'} maxW={'3xl'} mt={{ base: '40px', md: '80px' }}>
           <Box pt={'20px'}>
@@ -52,15 +40,15 @@ export default function Blog({ fallbackData }: Props) {
           <HStack>
             <MdOutlineLocalPostOffice size={'42px'} />
             <Text fontSize={{ base: '20px', md: '30px' }}>
-              {DatetimeUtil.translate(article.publishedAt)}
+              {DatetimeUtil.translate(article.updatedAt)}
             </Text>
           </HStack>
-          <Box
-            w={{ base: '95%', md: '100%' }}
-            py={'5vh'}
-            whiteSpace={'break-spaces'}
-          >
-            <Markdown content={article.content} />
+          <Box w={{ base: '95%', md: '100%' }} py={'5vh'}>
+            <Markdown
+              content={NodeHtmlMarkdown.translate(article.content, {
+                strongDelimiter: '**',
+              })}
+            />
           </Box>
         </VStack>
       </Container>
@@ -69,12 +57,11 @@ export default function Blog({ fallbackData }: Props) {
 }
 
 export const getStaticPaths: GetStaticPaths<PathParams> = async () => {
-  const endpoint = Config.API_URL + '/article';
-  const articles = (await fetch(endpoint).then((res) =>
-    res.json(),
-  )) as Article[];
+  const articles: Article[] = await Client.get({ endpoint: 'articles' }).then(
+    (res) => res.contents,
+  );
   const paths = articles.map((article) => {
-    return { params: { slug: article.title } };
+    return { params: { id: article.id } };
   });
 
   return {
@@ -84,13 +71,15 @@ export const getStaticPaths: GetStaticPaths<PathParams> = async () => {
 };
 
 export const getStaticProps: GetStaticProps = async (context) => {
-  const { slug } = context.params as PathParams;
-  const endpoint = Config.API_URL + `/article/${slug}`;
-  const article = (await fetch(endpoint).then((x) => x.json())) as Article;
+  const { id } = context.params as PathParams;
+  const article: Article = await Client.get({
+    endpoint: 'articles',
+    contentId: id,
+  });
 
   return {
     props: {
-      fallbackData: article,
+      article: article,
     },
   };
 };
