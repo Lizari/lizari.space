@@ -10,14 +10,16 @@ import {
   Text,
 } from '@chakra-ui/react';
 import { useRouter } from 'next/router';
-import React from 'react';
+import React, { useState } from 'react';
 
 import DatetimeUtil from '@/utils/DatetimeUtil';
 import { Article } from '@/entity/Article';
+import fallback from '../../../public/fallback.jpg';
 
 const BlogListCard: React.FC<Article> = (props) => {
   const router = useRouter();
   const handleLinkClick = (url: string) => router.push(url);
+  const [thumbnailError, setThumbnailError] = useState(false);
 
   return (
     <Box
@@ -31,10 +33,11 @@ const BlogListCard: React.FC<Article> = (props) => {
     >
       <Center>
         <Image
-          src={props.eyecatch.url}
+          src={thumbnailError ? fallback.src : props.eyecatch.url}
           objectFit={'cover'}
           maxH={'220px'}
           alt={'thumbnail'}
+          onError={() => setThumbnailError(true)}
         />
       </Center>
       <Box p={'10px'}>

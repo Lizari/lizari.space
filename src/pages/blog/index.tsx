@@ -35,9 +35,9 @@ export default function Blog(props: Props) {
 }
 
 export async function getStaticProps() {
-  const articles: Article[] = await Client
-    .get({ endpoint: 'articles' })
-    .then((res) => res.contents);
+  const articles: Article[] = await Client.get({ endpoint: 'articles' }).then(
+    (res) => res.contents,
+  );
 
   return {
     props: {
