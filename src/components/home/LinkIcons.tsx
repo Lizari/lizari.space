@@ -4,11 +4,11 @@ import { FaGithub, FaTwitch, FaTwitter } from 'react-icons/fa';
 
 const LinkIcons: React.FC = () => {
   return (
-    <Box pb={5}>
+    <Box pb={5} maxW={'100%'}>
       <Text as={'u'} fontSize={'2xl'} fontWeight={'semibold'}>
         On the web
       </Text>
-      <Stack direction={'row'} pt={5} spacing={10} maxW={'3xl'}>
+      <Stack direction={['column', 'row']} pt={5} spacing={10}>
         <Button
           leftIcon={<FaGithub size={'42px'} />}
           aria-label={'to Github'}

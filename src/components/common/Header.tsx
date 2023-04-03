@@ -16,7 +16,7 @@ type HeaderProps = {
   image?: string;
 };
 
-const Header: React.VFC<HeaderProps> = (props) => {
+const Header: React.FC<HeaderProps> = (props) => {
   const { colorMode, toggleColorMode } = useColorMode();
   const description: string = props.description ?? "Lizari's Website";
 

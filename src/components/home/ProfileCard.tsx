@@ -2,7 +2,7 @@ import { Box, List, ListItem, Text } from '@chakra-ui/react';
 
 const ProfileCard: React.FC = () => {
   return (
-    <Box minW={'100%'}>
+    <Box maxW={'100%'}>
       <Text as={'u'} fontSize={'2xl'} fontWeight={'semibold'}>
         Bio
       </Text>
@@ -18,7 +18,7 @@ const ProfileCard: React.FC = () => {
           <Box
             borderLeft={'2px'}
             borderColor={'black'}
-            width={'calc(100% - 8.5em)'}
+            width={'calc(100% - 4.5em)'}
             p={'0.5em 2.0em 3.0em'}
           >
             <Text fontWeight={'semibold'}>出身地</Text>
@@ -36,7 +36,7 @@ const ProfileCard: React.FC = () => {
           <Box
             borderLeft={'2px'}
             borderColor={'black'}
-            width={'calc(100% - 8.5em)'}
+            width={'calc(100% - 4.5em)'}
             p={'0.5em 2.0em 3.0em'}
           >
             <Text fontWeight={'semibold'}>プログラミングを知る</Text>

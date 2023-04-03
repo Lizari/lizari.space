@@ -18,8 +18,7 @@ import fallback from '../../../public/fallback.jpg';
 
 const BlogListCard: React.FC<Article> = (props) => {
   const router = useRouter();
-  const handleLinkClick = (url: string) => router.push(url);
-  const [thumbnailError, setThumbnailError] = useState(false);
+  const [thumbnail, setThumbnail] = useState(props.eyecatch.url);
 
   return (
     <Box
@@ -33,11 +32,11 @@ const BlogListCard: React.FC<Article> = (props) => {
     >
       <Center>
         <Image
-          src={thumbnailError ? fallback.src : props.eyecatch.url}
+          src={thumbnail}
           objectFit={'cover'}
           maxH={'220px'}
           alt={'thumbnail'}
-          onError={() => setThumbnailError(true)}
+          onError={() => setThumbnail(fallback.src)}
         />
       </Center>
       <Box p={'10px'}>
@@ -62,7 +61,7 @@ const BlogListCard: React.FC<Article> = (props) => {
             color={'gray.900'}
             fontSize={{ base: 'md', sm: 'xl', xl: '2xl' }}
             fontWeight={'bold'}
-            onClick={() => handleLinkClick(`/blog/${props.id}`)}
+            onClick={() => router.push(`/blog/${props.id}`)}
           >
             {props.title}
           </Link>
