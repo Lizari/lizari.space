@@ -12,7 +12,7 @@ import HobbyCard from '@/components/home/HobbyCard';
 export default function Home() {
   return (
     <div>
-      <Container w={{ base: 'md', xl: '5xl' }}>
+      <Container maxW={'5xl'}>
         <Header title={'Home'} path={'#'} />
         <SlideIn>
           <TopBanner />
