@@ -33,9 +33,9 @@ const Header: React.FC<HeaderProps> = (props) => {
         <meta property={'og:site_name'} content={props.title} />
         <meta property={'og:description'} content={description} />
         <meta property={'og:type'} content={'website'} />
-        {props.image ? (
+        {props.image && (
           <meta property={'og:image'} content={props.image} />
-        ) : null}
+        )}
         <link
           rel={'canonical'}
           href={`https://web.lizari.space/${props.path}`}

@@ -26,7 +26,7 @@ export default function Blog(props: Props) {
           title={article.title}
           path={`blog/${article.id}`}
           description={article.description}
-          image={article.eyecatch.url}
+          image={article.eyecatch.url ?? ""}
         />
         <VStack margin={'auto'} maxW={'3xl'} mt={{ base: '40px', md: '80px' }}>
           <Box pt={'20px'}>
