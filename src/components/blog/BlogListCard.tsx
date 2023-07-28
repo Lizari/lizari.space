@@ -9,7 +9,6 @@ import {
   TagLabel,
   Text,
 } from '@chakra-ui/react';
-import { useRouter } from 'next/router';
 import React, { useState } from 'react';
 
 import DatetimeUtil from '@/utils/DatetimeUtil';
@@ -17,7 +16,6 @@ import { Article } from '@/entity/Article';
 import fallback from '../../../public/fallback.jpg';
 
 const BlogListCard: React.FC<Article> = (props) => {
-  const router = useRouter();
   const [thumbnail, setThumbnail] = useState(props.eyecatch.url);
 
   return (
@@ -58,10 +56,10 @@ const BlogListCard: React.FC<Article> = (props) => {
         </Flex>
         <Box>
           <Link
+            href={`/blog/${props.id}`}
             color={'gray.900'}
             fontSize={{ base: 'md', sm: 'xl', xl: '2xl' }}
             fontWeight={'bold'}
-            onClick={() => router.push(`/blog/${props.id}`)}
           >
             {props.title}
           </Link>

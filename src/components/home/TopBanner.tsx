@@ -22,7 +22,7 @@ const TopBanner: React.FC = () => {
           lineHeight={'110%'}
           fontSize={{ base: '2xl', sm: '4xl', md: '6xl' }}
         >
-          Lizari
+          XPS/Lizari
         </Heading>
         <Text
           fontSize={{ base: 'md', sm: 'xl', md: '2xl' }}
