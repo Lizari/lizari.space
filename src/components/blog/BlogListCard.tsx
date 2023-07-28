@@ -16,7 +16,7 @@ import { Article } from '@/entity/Article';
 import fallback from '../../../public/fallback.jpg';
 
 const BlogListCard: React.FC<Article> = (props) => {
-  const [thumbnail, setThumbnail] = useState(props.eyecatch.url);
+  const [thumbnail, setThumbnail] = useState(props.eyecatch.url ?? null);
 
   return (
     <Box
